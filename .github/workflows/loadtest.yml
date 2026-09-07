@@ -1,0 +1,73 @@
+name: loadtest
+
+on:
+  schedule:
+    - cron: "7 7 * * *"          # nightly, 07:07 UTC
+  pull_request:
+    paths:
+      - "app/**"
+      - "loadtest/**"
+      - "docker-compose.yml"
+      - "Dockerfile"
+      - ".github/workflows/loadtest.yml"
+  workflow_dispatch:
+
+jobs:
+  k6:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Bring up the Compose stack
+        run: |
+          docker compose up -d --build api worker
+          for i in $(seq 1 30); do
+            curl -fsS localhost:8000/healthz && break
+            sleep 2
+          done
+          curl -fsS localhost:8000/readyz
+
+      # Shared runners are ~2 vCPU, so this is a correctness smoke (no 5xx,
+      # checks pass) under light concurrent load — not the single-node SLO,
+      # which is measured on a real box (docs/perf_slo.md).
+      - name: k6 smoke load
+        run: SMOKE=1 VUS=15 SLEEP_MAX=0.3 HOLD=40s USER_POOL=20 ./loadtest/run.sh
+
+      - name: Publish results to the workflow summary
+        if: always()
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, pathlib
+          print("## k6 smoke load\n")
+          p = pathlib.Path("loadtest/results/summary.json")
+          if not p.exists():
+              print("_no summary produced_"); raise SystemExit
+          m = json.loads(p.read_text())["metrics"]
+          def v(name, stat): return m.get(name, {}).get("values", {}).get(stat)
+          rows = [
+              ("requests", f"{v('http_reqs','count')}  ({v('http_reqs','rate'):.0f}/s)"),
+              ("error rate", f"{v('http_req_failed','rate')*100:.2f} %"),
+              ("checks", f"{v('checks','rate')*100:.1f} %"),
+              ("p95 latency", f"{v('http_req_duration','p(95)'):.0f} ms"),
+              ("p95 read / list / upload",
+               f"{v('snaptrack_photo_read_ms','p(95)'):.0f} / {v('snaptrack_photo_list_ms','p(95)'):.0f} / {v('snaptrack_photo_upload_ms','p(95)'):.0f} ms"),
+          ]
+          print("| metric | value |\n|---|---|")
+          for k, val in rows:
+              print(f"| {k} | {val} |")
+          print("\n_CI runners are ~2 vCPU; latency here is not the SLO — see docs/perf_slo.md._")
+          PY
+
+      - name: Dump API logs on failure
+        if: failure()
+        run: docker compose logs api worker
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: k6-report
+          path: loadtest/results/
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v

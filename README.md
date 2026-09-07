@@ -3,6 +3,7 @@
 [![lint-test](https://github.com/Mitulol/snaptrack-api/actions/workflows/lint-test.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/lint-test.yml)
 [![contract-test](https://github.com/Mitulol/snaptrack-api/actions/workflows/contract-test.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/contract-test.yml)
 [![postman-smoke](https://github.com/Mitulol/snaptrack-api/actions/workflows/postman-smoke.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/postman-smoke.yml)
+[![loadtest](https://github.com/Mitulol/snaptrack-api/actions/workflows/loadtest.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/loadtest.yml)
 
 A photo-tracking HTTP API: users upload photos, SnapTrack stores per-photo
 metadata, derives thumbnails on a background worker, and serves hot metadata
@@ -71,8 +72,9 @@ This repository is developed in phases; see [Roadmap](#roadmap) for status.
 | Metrics            | `prometheus-fastapi-instrumentator` → Prometheus 3 → Grafana 11 |
 | Contract testing   | Schemathesis 4 (nightly, against the live Compose stack)      |
 | Smoke testing      | Postman collection + Newman (post-deploy in CI)               |
+| Load testing       | k6 (Docker), Prometheus remote-write for live Grafana panels  |
 | Packaging          | Docker Compose; single image runs both `api` and `worker`     |
-| CI                 | GitHub Actions — flake8, pytest vs. real Postgres/Redis, spec drift |
+| CI                 | GitHub Actions — flake8, pytest vs. real Postgres/Redis, spec drift, contract, smoke, load |
 
 ## Running it locally
 
@@ -138,6 +140,23 @@ the JSON imports into any Grafana without editing.
   every push to `main`. `postman/snaptrack.postman_collection.json` is the full
   collection generated from the spec.
 
+## Load testing (Phase 2)
+
+`loadtest/k6/script.js` drives an auth + photo-CRUD mix (40 % cached read,
+25 % list, 15 % upload, 12 % patch, 8 % thumbnail-status) through k6 in Docker.
+Its k6 `thresholds` **are** the SLO in [`docs/perf_slo.md`](docs/perf_slo.md), so
+`./loadtest/run.sh` exits non-zero on a regression.
+
+```bash
+docker compose up -d && ./loadtest/run.sh           # 50 VUs, SLO enforced
+PROM_RW=1 ./loadtest/run.sh                          # + live in Grafana's "Load test (k6)" row
+VUS=200 SLEEP_MAX=0.1 ./loadtest/run.sh              # saturation test
+```
+
+`loadtest.yml` runs a light **smoke** load (correctness only — CI runners are
+~2 vCPU) nightly and on PRs; the real SLO numbers are measured on a real box and
+committed to `loadtest/results/summary.html`.
+
 ## API surface
 
 `ErrorResponse` (`{"detail": string}`) is the body for every deliberate 4xx/409.
@@ -163,23 +182,21 @@ unsupported methods.
 
 ## Results — real numbers
 
-Measured on this machine (Windows + WSL2, Docker Desktop). Load-tested p95 under
-concurrency lands in Phase 2 — the latencies below are **single-client
-baselines**.
+Measured on this machine (Windows + WSL2, Docker Desktop, 12 vCPU / 15 GB).
 
 | Metric                                    | Value                                              |
 | ----------------------------------------- | -------------------------------------------------- |
 | Tests                                     | 70 passing (`pytest`)                              |
 | Line + branch coverage                    | **100.0%** (`coverage`, branch on; CI gate 90%)    |
 | Lint                                      | flake8 clean (`app` + `tests` + `scripts`)         |
-| Contract test                             | Schemathesis: **0 failures** across 13 operations, ~600–720 generated cases (2 non-blocking coverage warnings) |
+| Contract test                             | Schemathesis: **0 failures** across 13 operations, ~900 generated cases (CI) |
 | Smoke suite                               | Newman: **28/28 assertions**, 18 requests          |
-| CI                                        | 3 workflows green — lint-test, contract-test, postman-smoke |
+| CI                                        | 4 workflows green — lint-test, contract-test, postman-smoke, loadtest |
+| **Load test @ reference load** (50 VUs, ~135 req/s) | **p95 269 ms**, error rate **0.00 %**, checks 100 % — [report](loadtest/results/summary.html) |
+| Load test — cached read / list / upload p95 | 213 ms / 240 ms / 348 ms                          |
+| Load test — saturation (200 VUs)          | ~207 req/s ceiling, p95 1.3 s, 0 % errors          |
 | Thumbnail latency (320×240 PNG, local)    | source→`ready` in ~1–2 s end to end                |
-| RED, light single-client traffic          | rate ≈ 1.3 req/s, error-rate 0%, p95 ≈ 13 ms (Prometheus `_highr_` buckets) |
 | `GET /photos/{id}` cache hit, 1 client    | p50 ≈ 3.1 ms, p90 ≈ 3.9 ms (n=500)                 |
-| `GET /photos` list (DB), 1 client         | p50 ≈ 5.7 ms, p90 ≈ 7.8 ms (n=500)                 |
-| `GET /healthz`, 1 client                  | p50 ≈ 1.9 ms, p90 ≈ 3.0 ms (n=500)                 |
 
 ### What the contract test found (Phase 1)
 
@@ -205,6 +222,23 @@ Two Schemathesis checks are disabled in `schemathesis.toml` with rationale:
 when generating "valid" data) and unknown-query-parameter rejection
 (intentionally tolerated, per common REST convention).
 
+### What the load test found (Phase 2)
+
+The first k6 run (200 VUs) topped out at **88 req/s** with p95 **1.4 s** and
+0.32 % errors, while `api` sat pinned at 2 CPU cores and 10 host cores idle.
+Findings + fixes (full write-up: [ADR 0001](docs/adr/0001-load-test-tuning.md)):
+
+| Finding | Fix | Effect |
+| --- | --- | --- |
+| `WEB_CONCURRENCY=2` — API pinned at 2 cores | → 6 uvicorn workers | throughput 88 → **207 req/s** (+135 %) |
+| `POST /photos` was `async def` but did blocking Pillow + DB work on the event loop | → sync `def` (runs in threadpool) | uploads no longer stall other requests on the worker |
+| Captioned upload did 2 transactions | set caption in the initial INSERT | 1 commit per upload |
+| Pool `10+20`/worker × 6 would exceed PG's 100 conns | pool `5+5` (api) / `2+4` (celery); PG `max_connections=200` | no connection exhaustion |
+| `PHOTO_CACHE_TTL_SECONDS=60` | → 300 (writes invalidate explicitly) | higher hit rate under load |
+
+After tuning, the identical 200 VU test: **207 req/s, 0 errors, 0 interrupted
+iterations**. At the reference load the stack meets every SLO threshold.
+
 ### What broke while building Phase 0
 
 - **`passlib[bcrypt]` import error** with bcrypt ≥ 4.1 (`__about__` removed).
@@ -219,7 +253,7 @@ when generating "valid" data) and unknown-query-parameter rejection
 
 - [x] **Phase 0** — CRUD + JWT + async thumbnails + Redis cache + Compose + CI
 - [x] **Phase 1** — Prometheus + Grafana (RED), versioned OpenAPI 3.1, nightly Schemathesis contract tests, Postman/Newman smoke suite
-- [ ] **Phase 2** — k6 load test, documented SLO, tuning ADR, committed HTML report
+- [x] **Phase 2** — k6 load test + `loadtest.yml`, documented SLO, tuning ADR (88 → 207 req/s), committed HTML report, live k6 panels in Grafana
 - [ ] **Phase 3** — photo flag & moderation feature, built test-first, with RBAC
 - [ ] **Phase 4** — moderation-notify task, Traefik canary release, `v1.1.0` tag, generated Python SDK
 
@@ -239,6 +273,8 @@ app/
 observability/    prometheus.yml + Grafana provisioning + RED dashboard JSON
 openapi/          committed OpenAPI 3.1 spec (stable + versioned)
 postman/          smoke collection, spec-generated collection, environment, fixtures
+loadtest/         k6 script + thresholds (== SLO), run.sh, committed results/
+docs/             perf_slo.md, adr/ (architecture decision records)
 tests/            pytest suite (unit + integration), 100% covered
 scripts/          smoke.sh (e2e), export_openapi.py (spec + drift check)
 ```

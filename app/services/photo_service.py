@@ -28,7 +28,13 @@ def _load(db: Session, photo_id: int) -> Photo | None:
 
 
 def create_photo(
-    db: Session, owner: User, *, data: bytes, filename: str, content_type: str
+    db: Session,
+    owner: User,
+    *,
+    data: bytes,
+    filename: str,
+    content_type: str,
+    caption: str | None = None,
 ) -> Photo:
     """Persist an uploaded image and its pending thumbnail row.
 
@@ -43,6 +49,7 @@ def create_photo(
         size_bytes=len(data),
         width=width,
         height=height,
+        caption=caption,
         storage_path="",  # filled once we have an id
     )
     photo.thumbnail = Thumbnail(status=ThumbnailStatus.PENDING)

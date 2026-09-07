@@ -22,6 +22,11 @@ class Settings(BaseSettings):
     redis_url: str = "redis://localhost:6379/0"
     photo_storage_dir: str = "./_storage"
 
+    # Per-worker SQLAlchemy pool. Keep (pool_size + max_overflow) * WEB_CONCURRENCY
+    # comfortably under Postgres max_connections. See docs/adr/0001-load-test-tuning.md.
+    db_pool_size: int = 5
+    db_max_overflow: int = 5
+
     # --- Celery ----------------------------------------------------------------
     celery_broker_url: str = "redis://localhost:6379/1"
     celery_result_backend: str = "redis://localhost:6379/2"
@@ -32,7 +37,9 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 30
 
     # --- Behaviour tuning --------------------------------------------------
-    photo_cache_ttl_seconds: int = 60
+    # 5 min: reads dominate and every write path invalidates the key explicitly,
+    # so a longer TTL trades no correctness for a higher hit rate under load.
+    photo_cache_ttl_seconds: int = 300
     thumbnail_max_edge: int = 256
     thumbnail_task_max_retries: int = 3
 

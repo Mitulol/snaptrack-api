@@ -29,13 +29,15 @@ _IMAGE_200 = {
     status_code=status.HTTP_201_CREATED,
     responses={**responses.AUTH, **responses.BAD_REQUEST, **responses.TOO_LARGE},
 )
-async def upload_photo(
+def upload_photo(
     current_user: CurrentUser,
     db: DbSession,
     file: Annotated[UploadFile, File()],
     caption: Annotated[str | None, Form()] = None,
 ) -> PhotoOut:
-    data = await file.read()
+    # Sync def on purpose: this handler does CPU work (Pillow) and blocking DB
+    # I/O, so it runs in the threadpool instead of stalling the event loop.
+    data = file.file.read()
     if len(data) > MAX_UPLOAD_BYTES:
         raise HTTPException(
             status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE, detail="File too large"
@@ -47,16 +49,12 @@ async def upload_photo(
             data=data,
             filename=file.filename or "upload",
             content_type=file.content_type or "application/octet-stream",
+            caption=caption,
         )
     except InvalidImageError as exc:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)
         ) from None
-
-    if caption is not None:
-        photo = photo_service.update_photo(
-            db, photo.id, requester=current_user, caption=caption
-        )
 
     generate_thumbnail.delay(photo.id)
     return PhotoOut.model_validate(photo)

@@ -26,7 +26,11 @@ def _engine_kwargs(url: str) -> dict:
         # In-memory SQLite needs a shared connection across threads for the
         # TestClient + Celery-eager path to see the same data.
         return {"connect_args": {"check_same_thread": False}, "poolclass": StaticPool}
-    return {"pool_pre_ping": True, "pool_size": 10, "max_overflow": 20}
+    return {
+        "pool_pre_ping": True,
+        "pool_size": settings.db_pool_size,
+        "max_overflow": settings.db_max_overflow,
+    }
 
 
 engine = create_engine(settings.database_url, **_engine_kwargs(settings.database_url))

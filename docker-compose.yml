@@ -3,6 +3,9 @@ name: snaptrack
 services:
   postgres:
     image: postgres:16-alpine
+    # max_connections raised for the multi-worker API + Celery pool headroom
+    # (see docs/adr/0001-load-test-tuning.md).
+    command: ["postgres", "-c", "max_connections=200"]
     environment:
       POSTGRES_USER: snaptrack
       POSTGRES_PASSWORD: snaptrack
@@ -38,7 +41,9 @@ services:
       CELERY_BROKER_URL: redis://redis:6379/1
       CELERY_RESULT_BACKEND: redis://redis:6379/2
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:-dev-secret-change-me}
-      WEB_CONCURRENCY: 2
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-6}
+      DB_POOL_SIZE: 5
+      DB_MAX_OVERFLOW: 5
     ports:
       - "8000:8000"
     volumes:
@@ -62,7 +67,9 @@ services:
       REDIS_URL: redis://redis:6379/0
       CELERY_BROKER_URL: redis://redis:6379/1
       CELERY_RESULT_BACKEND: redis://redis:6379/2
-      CELERY_CONCURRENCY: 2
+      CELERY_CONCURRENCY: ${CELERY_CONCURRENCY:-4}
+      DB_POOL_SIZE: 2
+      DB_MAX_OVERFLOW: 4
     volumes:
       - photo_storage:/data
     depends_on:
@@ -77,6 +84,8 @@ services:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.retention.time=6h
       - --web.enable-lifecycle
+      # accept k6's Prometheus remote-write during load tests (loadtest/run.sh PROM_RW=1)
+      - --web.enable-remote-write-receiver
     ports:
       - "9090:9090"
     volumes:

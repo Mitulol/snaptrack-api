@@ -129,7 +129,8 @@ def test_engine_kwargs_differ_by_backend():
 
     assert "poolclass" in _engine_kwargs("sqlite:///:memory:")
     pg = _engine_kwargs("postgresql+psycopg2://u:p@localhost/db")
-    assert pg["pool_pre_ping"] is True and pg["pool_size"] == 10
+    assert pg["pool_pre_ping"] is True
+    assert pg["pool_size"] == settings.db_pool_size
 
 
 def test_worker_retries_transient_error_then_fails(client, auth_headers, make_image, monkeypatch):
