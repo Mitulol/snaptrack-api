@@ -1,4 +1,7 @@
 # Dev / CI-only tooling. Runtime deps come from requirements.txt.
+# Schemathesis is intentionally NOT here: it pins pytest>=9 and pulls a heavy
+# tree (hypothesis, jsonschema-rs). The contract-test workflow installs it on
+# its own; for a local run: pip install schemathesis==4.26.0
 pytest==8.3.4
 pytest-cov==6.0.0
 httpx==0.28.1
@@ -6,4 +9,3 @@ flake8==7.1.1
 flake8-bugbear==24.12.12
 fakeredis==2.26.2
 freezegun==1.5.1
-schemathesis==4.26.0

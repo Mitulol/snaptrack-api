@@ -8,6 +8,7 @@ dist/
 
 # Virtualenv
 .venv/
+.venv-contract/
 venv/
 
 # Test / coverage artifacts
