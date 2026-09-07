@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "snaptrack-api"
+version = "1.0.0"
+description = "SnapTrack: a photo-tracking API with async thumbnail processing and moderation workflows."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Mitul Goel" }]
+dynamic = ["dependencies", "optional-dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+optional-dependencies.dev = { file = ["requirements-dev.txt"] }
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --cov=app --cov-report=term-missing --cov-report=xml"
+markers = [
+    "integration: tests that exercise the DB / cache / worker end to end",
+]
+
+[tool.coverage.run]
+branch = true
+omit = ["app/alembic/*", "tests/*"]
+
+[tool.coverage.report]
+show_missing = true
+precision = 1

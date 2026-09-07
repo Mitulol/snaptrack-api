@@ -1,0 +1,8 @@
+# Dev / CI-only tooling. Runtime deps come from requirements.txt.
+pytest==8.3.4
+pytest-cov==6.0.0
+httpx==0.28.1
+flake8==7.1.1
+flake8-bugbear==24.12.12
+fakeredis==2.26.2
+freezegun==1.5.1

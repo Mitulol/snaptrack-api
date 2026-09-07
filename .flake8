@@ -1,0 +1,13 @@
+[flake8]
+max-line-length = 100
+extend-select = B950
+extend-ignore = E203, E501, W503
+exclude =
+    .git,
+    .venv,
+    __pycache__,
+    build,
+    dist
+per-file-ignores =
+    tests/*: B011
+    app/alembic/*: E402
