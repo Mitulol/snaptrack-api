@@ -44,3 +44,4 @@ k6/vendor/          pinned copies of k6-summary + k6-reporter (no runtime fetch)
 run.sh              docker wrapper (network, volumes, prom-rw wiring)
 results/            committed HTML + JSON from the last real run
 ```
+
