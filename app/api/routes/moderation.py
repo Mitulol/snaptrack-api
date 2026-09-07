@@ -18,6 +18,7 @@ from app.schemas.moderation import (
 from app.services import moderation_service
 
 router = APIRouter(prefix="/moderation", tags=["moderation"])
+# Endpoints are admin-only (CurrentAdmin); flagging lives on the photos router.
 
 
 @router.get("/queue", response_model=ModerationQueue, responses={**responses.AUTH, **responses.FORBIDDEN})
