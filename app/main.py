@@ -52,7 +52,12 @@ def create_app() -> FastAPI:
 
     @app.get("/", tags=["health"], include_in_schema=False)
     def root() -> dict:
-        return {"service": "snaptrack-api", "version": __version__, "env": settings.environment}
+        return {
+            "service": "snaptrack-api",
+            "version": __version__,
+            "env": settings.environment,
+            "channel": settings.release_channel,
+        }
 
     return app
 

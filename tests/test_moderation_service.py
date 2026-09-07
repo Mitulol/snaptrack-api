@@ -6,11 +6,14 @@ import pytest
 from sqlalchemy import select
 
 from app.core.security import hash_password
+from app.database import SessionLocal
 from app.models import (
     Flag,
     FlagResolution,
     FlagStatus,
     ModerationAction,
+    Notification,
+    NotificationStatus,
     Photo,
     Thumbnail,
     ThumbnailStatus,
@@ -138,6 +141,35 @@ def test_action_decision_deletes_photo_and_closes_sibling_flags(db, make_user, m
     # flag rows cascade away with the photo; the audit is what persists
     assert db.scalars(select(Flag)).all() == []
     assert action.photo_id == photo.id
+
+
+def test_dismiss_notifies_the_reporter(db, make_user, make_photo):
+    admin = make_user("admin@example.com", is_admin=True)
+    u1 = make_user("u1@example.com")
+    photo = make_photo(u1)
+    flag = moderation_service.create_flag(db, photo, reporter=u1, reason="spam", note=None)
+
+    moderation_service.decide(db, flag.id, moderator=admin, decision="dismiss", note=None)
+
+    with SessionLocal() as s:
+        rows = s.scalars(select(Notification)).all()
+    assert [r.recipient_email for r in rows] == ["u1@example.com"]
+    assert rows[0].status is NotificationStatus.SENT
+
+
+def test_action_notifies_every_reporter_on_the_photo(db, make_user, make_photo):
+    admin = make_user("admin@example.com", is_admin=True)
+    owner = make_user("owner@example.com")
+    reporter2 = make_user("r2@example.com")
+    photo = make_photo(owner)
+    f1 = moderation_service.create_flag(db, photo, reporter=owner, reason="spam", note=None)
+    moderation_service.create_flag(db, photo, reporter=reporter2, reason="nudity", note=None)
+
+    moderation_service.decide(db, f1.id, moderator=admin, decision="action", note="policy")
+
+    with SessionLocal() as s:
+        emails = {r.recipient_email for r in s.scalars(select(Notification)).all()}
+    assert emails == {"owner@example.com", "r2@example.com"}
 
 
 def test_decide_on_missing_flag_raises(db, make_user):

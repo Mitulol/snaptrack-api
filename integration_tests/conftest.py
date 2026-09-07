@@ -70,7 +70,10 @@ def _clean(integration_stack) -> Iterator[None]:
     yield
     with engine.begin() as conn:
         conn.execute(
-            text("TRUNCATE users, photos, thumbnails, flags, moderation_actions RESTART IDENTITY CASCADE")
+            text(
+                "TRUNCATE users, photos, thumbnails, flags, moderation_actions, "
+                "notifications RESTART IDENTITY CASCADE"
+            )
         )
     try:
         from app.cache import get_cache_client

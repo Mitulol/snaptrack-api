@@ -70,6 +70,28 @@ def test_moderation_action_invalidates_the_photo_cache(client, register, make_pn
     assert client.get(f"/photos/{pid}", headers=owner).status_code == 404
 
 
+def test_action_decision_persists_a_sent_notification_in_postgres(client, db, register, make_png):
+    from sqlalchemy import select
+
+    from app.models import Notification, NotificationStatus, Photo
+
+    admin = register("admin4@itest.dev", admin=True)
+    owner = register("owner4@itest.dev")
+
+    pid = _upload(client, owner, make_png)
+    fid = client.post(f"/photos/{pid}/flag", headers=owner, json={"reason": "spam"}).json()["id"]
+
+    client.post(f"/moderation/{fid}/decision", headers=admin, json={"decision": "action"})
+
+    rows = db.scalars(select(Notification)).all()
+    assert [r.recipient_email for r in rows] == ["owner4@itest.dev"]
+    # the eager Celery task delivered it (console backend) before the request returned
+    assert rows[0].status is NotificationStatus.SENT and rows[0].sent_at is not None
+    # plain-int refs — the row outlives the photo (and flag) it is about
+    assert rows[0].photo_id == pid
+    assert db.get(Photo, pid) is None
+
+
 def test_duplicate_flag_hits_the_real_unique_constraint(client, register, make_png):
     headers = register("dup@itest.dev")
     pid = _upload(client, headers, make_png)

@@ -8,6 +8,7 @@ from app.models.moderation import (
     ModerationAction,
     ModerationDecision,
 )
+from app.models.notification import Notification, NotificationKind, NotificationStatus
 from app.models.photo import Photo
 from app.models.thumbnail import Thumbnail, ThumbnailStatus
 from app.models.user import User
@@ -23,4 +24,7 @@ __all__ = [
     "FlagResolution",
     "ModerationAction",
     "ModerationDecision",
+    "Notification",
+    "NotificationKind",
+    "NotificationStatus",
 ]
