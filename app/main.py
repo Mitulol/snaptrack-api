@@ -1,4 +1,9 @@
-"""FastAPI application factory and ASGI entrypoint."""
+"""FastAPI application factory and ASGI entrypoint.
+
+``create_app`` wires the routers, the ``Allow``-header middleware, and the
+Prometheus instrumentator; ``app`` is the module-level ASGI callable uvicorn
+and the test client import.
+"""
 
 from __future__ import annotations
 
