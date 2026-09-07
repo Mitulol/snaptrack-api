@@ -20,7 +20,7 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements-dev.txt
-      - run: flake8 app tests scripts
+      - run: flake8 app tests scripts integration_tests
 
   test:
     runs-on: ubuntu-latest

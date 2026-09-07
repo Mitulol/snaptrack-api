@@ -5,10 +5,12 @@
 wait-for-schema = 30.0
 max-failures = 25
 
-# The CI job seeds exactly one photo (id 1) before the run so the
-# /photos/{photo_id} operations exercise their success paths, not just 404.
+# The CI job seeds photo id 1 (owned by the admin test user) and flag id 1 so
+# the /photos/{photo_id} and /moderation/{flag_id} operations reach their
+# success paths, not just 404.
 [parameters]
 photo_id = 1
+flag_id = 1
 
 [generation]
 # The API intentionally ignores unknown query parameters (standard REST

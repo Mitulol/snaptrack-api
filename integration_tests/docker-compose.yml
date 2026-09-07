@@ -1,0 +1,29 @@
+# Throwaway Postgres + Redis for the pytest-docker integration suite.
+# Host ports are left unspecified so pytest-docker picks free ones (no clash
+# with the dev stack or other local services).
+name: snaptrack-itest
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: itest
+      POSTGRES_PASSWORD: itest
+      POSTGRES_DB: itest
+    ports:
+      - "5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U itest"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 20

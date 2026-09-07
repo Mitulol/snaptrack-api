@@ -21,10 +21,10 @@ def test_committed_spec_matches_code():
     assert result.returncode == 0, result.stdout + result.stderr
 
 
-def test_spec_is_openapi_31_v1():
+def test_spec_is_openapi_31():
     spec = app.openapi()
     assert spec["openapi"].startswith("3.1")
-    assert spec["info"]["version"] == "1.0.0"
+    assert spec["info"]["version"] == "1.1.0-rc1"
 
 
 def test_protected_photo_routes_document_401_and_404():
@@ -42,7 +42,15 @@ def test_error_responses_use_the_shared_model():
     assert ref.endswith("/ErrorResponse")
 
 
-def test_committed_versioned_spec_file_exists():
-    p = ROOT / "openapi" / "openapi-v1.0.0.json"
-    assert p.exists()
-    assert json.loads(p.read_text())["info"]["version"] == "1.0.0"
+def test_committed_versioned_spec_files_exist():
+    for version in ("1.0.0", "1.1.0-rc1"):
+        p = ROOT / "openapi" / f"openapi-v{version}.json"
+        assert p.exists(), p
+        assert json.loads(p.read_text())["info"]["version"] == version
+
+
+def test_moderation_endpoints_are_in_the_spec():
+    spec = app.openapi()
+    assert "/photos/{photo_id}/flag" in spec["paths"]
+    assert "/moderation/queue" in spec["paths"]
+    assert "/moderation/{flag_id}/decision" in spec["paths"]

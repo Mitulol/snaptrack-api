@@ -100,3 +100,21 @@ def auth_headers(client: TestClient):
         return {"Authorization": f"Bearer {resp.json()['access_token']}"}
 
     return _headers
+
+
+@pytest.fixture
+def admin_headers(client: TestClient, auth_headers):
+    """Headers for a user with ``is_admin=True`` (flag flipped directly in the DB)."""
+    from sqlalchemy import select
+
+    from app.models import User
+
+    def _headers(email: str = "admin@example.com") -> dict:
+        headers = auth_headers(email)
+        with SessionLocal() as s:
+            user = s.scalar(select(User).where(User.email == email))
+            user.is_admin = True
+            s.commit()
+        return headers
+
+    return _headers

@@ -8,8 +8,9 @@ from fastapi.responses import FileResponse
 from app.api import responses
 from app.api.deps import CurrentUser, DbSession
 from app.models import ThumbnailStatus
+from app.schemas.moderation import FlagCreate, FlagOut
 from app.schemas.photo import PhotoList, PhotoOut, PhotoUpdate, ThumbnailOut
-from app.services import photo_service
+from app.services import moderation_service, photo_service
 from app.services.images import InvalidImageError
 from app.storage import thumbnail_path
 from app.workers.tasks import generate_thumbnail
@@ -159,6 +160,28 @@ def get_thumbnail_file(
             detail=f"Thumbnail not ready (status={photo.thumbnail.status.value})",
         )
     return FileResponse(thumbnail_path(photo_id), media_type="image/jpeg")
+
+
+@router.post(
+    "/{photo_id}/flag",
+    response_model=FlagOut,
+    status_code=status.HTTP_201_CREATED,
+    responses={**responses.AUTH_RESOURCE, **responses.CONFLICT, **responses.JSON_BODY},
+)
+def flag_photo(
+    photo_id: int, payload: FlagCreate, current_user: CurrentUser, db: DbSession
+) -> FlagOut:
+    photo = _get_or_404(db, photo_id, current_user)
+    try:
+        flag = moderation_service.create_flag(
+            db, photo, reporter=current_user, reason=payload.reason.value, note=payload.note
+        )
+    except moderation_service.DuplicateFlagError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="You have already flagged this photo",
+        ) from None
+    return FlagOut.model_validate(flag)
 
 
 def _get_or_404(db, photo_id: int, user):

@@ -16,11 +16,14 @@ logs: ## Tail api + worker logs
 build: ## Build the image
 	docker compose build
 
-test: ## Run the test suite with coverage
+test: ## Run the unit + integration test suite with coverage
 	pytest
 
+itest: ## Run the pytest-docker suite (real Postgres + Redis)
+	pytest integration_tests/ -o addopts="-ra"
+
 lint: ## Run flake8
-	flake8 app tests scripts
+	flake8 app tests scripts integration_tests
 
 smoke: ## End-to-end check against a running stack
 	./scripts/smoke.sh

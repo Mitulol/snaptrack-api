@@ -5,7 +5,7 @@
             "description": "",
             "item": [
                 {
-                    "id": "bf6343a8-37f3-4998-981b-76b200ab8541",
+                    "id": "1db1048a-00d9-41f2-8a7b-3af321a29f00",
                     "name": "Login",
                     "request": {
                         "name": "Login",
@@ -46,7 +46,7 @@
                     },
                     "response": [
                         {
-                            "id": "bd489718-10c1-4248-a81e-6d0e0ec30fad",
+                            "id": "0e569d72-8353-4232-b5b8-077e8292daa9",
                             "name": "Successful Response",
                             "originalRequest": {
                                 "url": {
@@ -95,7 +95,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "afeb7460-17e3-4afc-80f3-90961ba5f5e8",
+                            "id": "94d8241b-1a39-4298-b2ad-f8099882c099",
                             "name": "Malformed request body or unsupported image",
                             "originalRequest": {
                                 "url": {
@@ -144,7 +144,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3046e823-0acc-4e6f-a13c-74006ac3a6f1",
+                            "id": "3bdaa80a-cedc-40b4-8536-9e434f7b37e0",
                             "name": "Missing or invalid bearer token",
                             "originalRequest": {
                                 "url": {
@@ -193,7 +193,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "48d31aa3-bcac-4c2a-8b03-c227549005de",
+                            "id": "51afe042-817c-4439-9a4a-4af14346f0dd",
                             "name": "Authenticated but not allowed",
                             "originalRequest": {
                                 "url": {
@@ -242,7 +242,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "60785271-c5d3-4acc-bd55-3cb808b3baac",
+                            "id": "78c117b4-ae5a-4185-9b3a-56f5231db1e3",
                             "name": "HTTP method not supported for this path",
                             "originalRequest": {
                                 "url": {
@@ -291,7 +291,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "51fad17f-305e-4bc6-be3c-c766533eaea4",
+                            "id": "f64add18-7585-4989-acd1-638d891d9de5",
                             "name": "Validation Error",
                             "originalRequest": {
                                 "url": {
@@ -346,7 +346,7 @@
                     }
                 },
                 {
-                    "id": "5e73df7e-4d53-4c14-ba40-b642b5c9f250",
+                    "id": "3b98a4a2-4d43-4fda-9b36-6d74eaf9cda5",
                     "name": "Me",
                     "request": {
                         "name": "Me",
@@ -382,7 +382,7 @@
                     },
                     "response": [
                         {
-                            "id": "ba2a32c4-4fd8-4f8a-8d67-2a940abb3b8d",
+                            "id": "bd09b3a7-4cde-4831-8c24-fa7307a474be",
                             "name": "Successful Response",
                             "originalRequest": {
                                 "url": {
@@ -426,7 +426,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "f9e94a58-3039-4e0e-ac09-a5ee21670a81",
+                            "id": "2c18a8ca-ba74-4b1d-addf-93ee0f4bf0ac",
                             "name": "Missing or invalid bearer token",
                             "originalRequest": {
                                 "url": {
@@ -470,7 +470,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "1cdf6c0c-22d3-4756-b382-0f381b3bdf26",
+                            "id": "1f9bde91-ff2a-4e40-a685-414c3afe352c",
                             "name": "HTTP method not supported for this path",
                             "originalRequest": {
                                 "url": {
@@ -520,7 +520,7 @@
                     }
                 },
                 {
-                    "id": "4b9cbfd9-9325-422d-83ea-3f4a70e5ee4b",
+                    "id": "4b702b68-591a-4d1a-8d08-db2618b52972",
                     "name": "Register",
                     "request": {
                         "name": "Register",
@@ -561,7 +561,7 @@
                     },
                     "response": [
                         {
-                            "id": "4bbc47ad-ddad-47df-9a7e-3a4bf36dc0b4",
+                            "id": "bc95232f-318c-4ae7-8148-80db754141c4",
                             "name": "Successful Response",
                             "originalRequest": {
                                 "url": {
@@ -610,7 +610,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "0b93c00b-b41e-4d3a-9456-e8ba96ec6753",
+                            "id": "68ef3710-4e70-4660-8994-72aabd3bc04d",
                             "name": "Malformed request body or unsupported image",
                             "originalRequest": {
                                 "url": {
@@ -659,7 +659,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "7dfc1b33-0555-40a6-9ad9-30e0c013f624",
+                            "id": "a045a0cc-d924-4147-b106-af85d35b4b38",
                             "name": "HTTP method not supported for this path",
                             "originalRequest": {
                                 "url": {
@@ -708,7 +708,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "739bb0cb-c8bc-44e7-abc6-539bce0e1e87",
+                            "id": "bc7fef3e-c80b-4c6f-81a8-149d9655ecc0",
                             "name": "Resource state conflict",
                             "originalRequest": {
                                 "url": {
@@ -757,7 +757,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "df640646-fbbe-4ed5-ad08-e091f2d8a78c",
+                            "id": "6e692f10-1ed1-486e-a8e0-475403699c0d",
                             "name": "Validation Error",
                             "originalRequest": {
                                 "url": {
@@ -818,7 +818,7 @@
             "description": "",
             "item": [
                 {
-                    "id": "5ef390a3-874d-4c83-bedc-fe2d5835dff3",
+                    "id": "63ee42e7-79de-4cac-bc2b-4de947fcc1ae",
                     "name": "Healthz",
                     "request": {
                         "name": "Healthz",
@@ -848,7 +848,7 @@
                     },
                     "response": [
                         {
-                            "id": "5856eea8-0a80-4b24-9056-94a6e92e8990",
+                            "id": "af8c14fe-e2f9-44f7-a258-7416e03f8ca8",
                             "name": "Successful Response",
                             "originalRequest": {
                                 "url": {
@@ -889,7 +889,7 @@
                     }
                 },
                 {
-                    "id": "5a132b27-f2f6-4f60-8ff6-836bb40edc21",
+                    "id": "d48f8115-05fc-4f02-bb4c-5cbf57956def",
                     "name": "Readyz",
                     "request": {
                         "name": "Readyz",
@@ -919,7 +919,7 @@
                     },
                     "response": [
                         {
-                            "id": "e7293158-484c-4927-bdcc-df2bb24fb4b7",
+                            "id": "c4272c1f-aa77-44f2-8772-5b5af6ae423c",
                             "name": "Successful Response",
                             "originalRequest": {
                                 "url": {
@@ -954,7 +954,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "ea53827d-14e1-40a2-9ad8-c3e7b2896dbc",
+                            "id": "9f8da74a-4ab0-4e6c-ad06-80504ae53e00",
                             "name": "One or more dependencies are unreachable",
                             "originalRequest": {
                                 "url": {
@@ -985,11 +985,866 @@
             ]
         },
         {
+            "name": "moderation",
+            "description": "",
+            "item": [
+                {
+                    "id": "5e00687a-5cc6-4e5c-82bb-d61c7edc90bb",
+                    "name": "Moderation Queue",
+                    "request": {
+                        "name": "Moderation Queue",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "moderation",
+                                "queue"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "limit",
+                                    "value": "20"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "offset",
+                                    "value": "0"
+                                }
+                            ],
+                            "variable": []
+                        },
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "GET",
+                        "body": {},
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{bearerToken}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "id": "1ffe8f46-09d0-419c-a1bf-70ec40d9c0da",
+                            "name": "Successful Response",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        "queue"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "limit",
+                                            "value": "20"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "offset",
+                                            "value": "0"
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"items\": [\n    {\n      \"id\": \"<integer>\",\n      \"photo_id\": \"<integer>\",\n      \"reporter_id\": \"<integer>\",\n      \"reason\": \"spam\",\n      \"note\": \"<string>\",\n      \"status\": \"resolved\",\n      \"resolution\": \"actioned\",\n      \"resolved_by_id\": \"<integer>\",\n      \"resolved_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\",\n      \"photo\": {\n        \"id\": \"<integer>\",\n        \"owner_id\": \"<integer>\",\n        \"caption\": \"<string>\",\n        \"created_at\": \"<dateTime>\"\n      },\n      \"reporter_email\": \"<string>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"photo_id\": \"<integer>\",\n      \"reporter_id\": \"<integer>\",\n      \"reason\": \"violence\",\n      \"note\": \"<string>\",\n      \"status\": \"pending\",\n      \"resolution\": \"actioned\",\n      \"resolved_by_id\": \"<integer>\",\n      \"resolved_at\": \"<dateTime>\",\n      \"created_at\": \"<dateTime>\",\n      \"photo\": {\n        \"id\": \"<integer>\",\n        \"owner_id\": \"<integer>\",\n        \"caption\": \"<string>\",\n        \"created_at\": \"<dateTime>\"\n      },\n      \"reporter_email\": \"<string>\"\n    }\n  ],\n  \"total\": \"<integer>\",\n  \"limit\": \"<integer>\",\n  \"offset\": \"<integer>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "d719c6af-e624-4164-a7b8-f5a90045ed40",
+                            "name": "Missing or invalid bearer token",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        "queue"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "limit",
+                                            "value": "20"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "offset",
+                                            "value": "0"
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "1b9f11b3-f6e0-4a48-9a8d-7317eae2cee8",
+                            "name": "Authenticated but not allowed",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        "queue"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "limit",
+                                            "value": "20"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "offset",
+                                            "value": "0"
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "f71afc9a-54dc-4849-86b9-06bbe344717f",
+                            "name": "HTTP method not supported for this path",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        "queue"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "limit",
+                                            "value": "20"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "offset",
+                                            "value": "0"
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "Method Not Allowed",
+                            "code": 405,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "bfcb4a3a-5326-4cf6-ba8a-8f2c84482400",
+                            "name": "Validation Error",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        "queue"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "limit",
+                                            "value": "20"
+                                        },
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "",
+                                                "type": "text/plain"
+                                            },
+                                            "key": "offset",
+                                            "value": "0"
+                                        }
+                                    ],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "GET",
+                                "body": {}
+                            },
+                            "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                            "code": 422,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "829f5a3f-91e4-4c50-b6af-eea3767e3caa",
+                    "name": "Decide",
+                    "request": {
+                        "name": "Decide",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "moderation",
+                                ":flag_id",
+                                "decision"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "type": "any",
+                                    "value": "<integer>",
+                                    "key": "flag_id",
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    }
+                                }
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"decision\": \"dismiss\",\n  \"note\": \"<string>\"\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{bearerToken}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "id": "fd4c9172-d8dd-4273-8e84-816382917e39",
+                            "name": "Successful Response",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        ":flag_id",
+                                        "decision"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"decision\": \"dismiss\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"<integer>\",\n  \"photo_id\": \"<integer>\",\n  \"reporter_id\": \"<integer>\",\n  \"reason\": \"violence\",\n  \"note\": \"<string>\",\n  \"status\": \"resolved\",\n  \"resolution\": \"dismissed\",\n  \"resolved_by_id\": \"<integer>\",\n  \"resolved_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "c02bfef5-6f75-40b0-93b0-8cf396676ed9",
+                            "name": "Missing or invalid bearer token",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        ":flag_id",
+                                        "decision"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"decision\": \"dismiss\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "1c8bc857-8bc5-49da-a36d-d3bc33a59cc5",
+                            "name": "Authenticated but not allowed",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        ":flag_id",
+                                        "decision"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"decision\": \"dismiss\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "b5a7f2cc-fc7a-493e-87ad-d45142dd2281",
+                            "name": "Not found, or not owned by the caller",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        ":flag_id",
+                                        "decision"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"decision\": \"dismiss\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "eed4b2cc-3580-4b52-ae8d-59601fa1a673",
+                            "name": "HTTP method not supported for this path",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        ":flag_id",
+                                        "decision"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"decision\": \"dismiss\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Method Not Allowed",
+                            "code": 405,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "32e9bf8e-45e9-4ca3-aa36-a57f5b9d7631",
+                            "name": "Resource state conflict",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        ":flag_id",
+                                        "decision"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"decision\": \"dismiss\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Conflict",
+                            "code": 409,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "9077f8ce-25f2-458f-b5d0-973c3a70587a",
+                            "name": "Validation Error",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "moderation",
+                                        ":flag_id",
+                                        "decision"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"decision\": \"dismiss\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                            "code": 422,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                }
+            ]
+        },
+        {
             "name": "photos",
             "description": "",
             "item": [
                 {
-                    "id": "5658eede-1b18-4960-ae07-6abb868d366a",
+                    "id": "beebf746-5032-4041-855e-d30017f5045b",
                     "name": "List Photos",
                     "request": {
                         "name": "List Photos",
@@ -1043,7 +1898,7 @@
                     },
                     "response": [
                         {
-                            "id": "1c99ef6c-940d-457b-a095-7a8067f7ddf5",
+                            "id": "fd0e499f-a3e7-4c44-b77f-10d6808216b6",
                             "name": "Successful Response",
                             "originalRequest": {
                                 "url": {
@@ -1100,12 +1955,12 @@
                                     "value": "application/json"
                                 }
                             ],
-                            "body": "{\n  \"items\": [\n    {\n      \"id\": \"<integer>\",\n      \"owner_id\": \"<integer>\",\n      \"original_filename\": \"<string>\",\n      \"content_type\": \"<string>\",\n      \"size_bytes\": \"<integer>\",\n      \"width\": \"<integer>\",\n      \"height\": \"<integer>\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"caption\": \"<string>\",\n      \"thumbnail\": {\n        \"status\": \"pending\",\n        \"attempts\": 0,\n        \"error\": \"<string>\",\n        \"height\": \"<integer>\",\n        \"updated_at\": \"<dateTime>\",\n        \"width\": \"<integer>\"\n      }\n    },\n    {\n      \"id\": \"<integer>\",\n      \"owner_id\": \"<integer>\",\n      \"original_filename\": \"<string>\",\n      \"content_type\": \"<string>\",\n      \"size_bytes\": \"<integer>\",\n      \"width\": \"<integer>\",\n      \"height\": \"<integer>\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"caption\": \"<string>\",\n      \"thumbnail\": {\n        \"status\": \"processing\",\n        \"attempts\": 0,\n        \"error\": \"<string>\",\n        \"height\": \"<integer>\",\n        \"updated_at\": \"<dateTime>\",\n        \"width\": \"<integer>\"\n      }\n    }\n  ],\n  \"total\": \"<integer>\",\n  \"limit\": \"<integer>\",\n  \"offset\": \"<integer>\"\n}",
+                            "body": "{\n  \"items\": [\n    {\n      \"id\": \"<integer>\",\n      \"owner_id\": \"<integer>\",\n      \"original_filename\": \"<string>\",\n      \"content_type\": \"<string>\",\n      \"size_bytes\": \"<integer>\",\n      \"width\": \"<integer>\",\n      \"height\": \"<integer>\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"caption\": \"<string>\",\n      \"thumbnail\": {\n        \"status\": \"ready\",\n        \"attempts\": 0,\n        \"error\": \"<string>\",\n        \"height\": \"<integer>\",\n        \"updated_at\": \"<dateTime>\",\n        \"width\": \"<integer>\"\n      }\n    },\n    {\n      \"id\": \"<integer>\",\n      \"owner_id\": \"<integer>\",\n      \"original_filename\": \"<string>\",\n      \"content_type\": \"<string>\",\n      \"size_bytes\": \"<integer>\",\n      \"width\": \"<integer>\",\n      \"height\": \"<integer>\",\n      \"created_at\": \"<dateTime>\",\n      \"updated_at\": \"<dateTime>\",\n      \"caption\": \"<string>\",\n      \"thumbnail\": {\n        \"status\": \"failed\",\n        \"attempts\": 0,\n        \"error\": \"<string>\",\n        \"height\": \"<integer>\",\n        \"updated_at\": \"<dateTime>\",\n        \"width\": \"<integer>\"\n      }\n    }\n  ],\n  \"total\": \"<integer>\",\n  \"limit\": \"<integer>\",\n  \"offset\": \"<integer>\"\n}",
                             "cookie": [],
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "ea9afc2d-f7f5-490e-bd3d-4f357ab3cc71",
+                            "id": "b0f666cd-2012-4642-9ebf-2bd01d718c70",
                             "name": "Missing or invalid bearer token",
                             "originalRequest": {
                                 "url": {
@@ -1167,7 +2022,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "62e105d2-a94a-48a1-a84f-cc6aa6ebcffc",
+                            "id": "84b38b27-eeee-4262-bf17-a1eac35b3511",
                             "name": "HTTP method not supported for this path",
                             "originalRequest": {
                                 "url": {
@@ -1229,7 +2084,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "034a494c-7ac9-4a60-8f85-6a082f3a2ed3",
+                            "id": "c58c80cb-e724-4d1a-9e10-8c83f95e054a",
                             "name": "Validation Error",
                             "originalRequest": {
                                 "url": {
@@ -1297,7 +2152,7 @@
                     }
                 },
                 {
-                    "id": "237d61e0-43eb-4526-a415-ce5cdb0f0ba1",
+                    "id": "f5c02cf4-0a3e-42bc-88eb-075cac8f890f",
                     "name": "Upload Photo",
                     "request": {
                         "name": "Upload Photo",
@@ -1357,7 +2212,7 @@
                     },
                     "response": [
                         {
-                            "id": "6b388dcb-5f6d-4b38-ac8e-bf772fbfd994",
+                            "id": "6bfb904d-f258-454c-a610-73daf0f56e63",
                             "name": "Successful Response",
                             "originalRequest": {
                                 "url": {
@@ -1425,7 +2280,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "7a76b3f1-51b5-412e-aac3-27c2ba168d3d",
+                            "id": "93e0ead1-5593-4ef6-ada0-8a2f954e814d",
                             "name": "Malformed request body or unsupported image",
                             "originalRequest": {
                                 "url": {
@@ -1493,7 +2348,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d82f6195-2030-4c19-85bd-96d4a29223aa",
+                            "id": "fca1a872-4329-42fc-b0e3-8c5f1fcf9b92",
                             "name": "Missing or invalid bearer token",
                             "originalRequest": {
                                 "url": {
@@ -1561,7 +2416,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a939d5e5-a593-453b-b122-5b07a7809b7d",
+                            "id": "e46af227-d903-404d-9fe9-db0b6f7f4952",
                             "name": "HTTP method not supported for this path",
                             "originalRequest": {
                                 "url": {
@@ -1629,7 +2484,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "f4490eef-de5c-484b-bb6c-6b969b361128",
+                            "id": "16fcedfa-036d-46eb-98e7-bfa9475c1240",
                             "name": "Upload exceeds the size limit",
                             "originalRequest": {
                                 "url": {
@@ -1697,7 +2552,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9ffbab4e-dee1-4c72-9c86-df0af52358b1",
+                            "id": "3d55122b-26c1-477e-aaa0-4f6ef2d51b12",
                             "name": "Validation Error",
                             "originalRequest": {
                                 "url": {
@@ -1771,7 +2626,7 @@
                     }
                 },
                 {
-                    "id": "fc69c511-3c77-4c41-925d-10b311999a24",
+                    "id": "78bc2858-8fda-40f2-b901-4ad92aa77214",
                     "name": "Delete Photo",
                     "request": {
                         "name": "Delete Photo",
@@ -1818,7 +2673,7 @@
                     },
                     "response": [
                         {
-                            "id": "d8ef349e-4d46-4a04-81b9-7805917c5108",
+                            "id": "ba4aaec2-1e62-4ea1-8247-9fc04dcb8e71",
                             "name": "Successful Response",
                             "originalRequest": {
                                 "url": {
@@ -1852,7 +2707,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "641d2742-6703-4394-92e1-2a7bbea6d838",
+                            "id": "01ebf97b-478f-4508-b2cf-8945dd969767",
                             "name": "Missing or invalid bearer token",
                             "originalRequest": {
                                 "url": {
@@ -1896,7 +2751,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "4a124e94-dd9b-432b-a7a9-6561ea9b2678",
+                            "id": "bc89a8d8-e789-41d5-9e0e-b857712c9dc1",
                             "name": "Not found, or not owned by the caller",
                             "originalRequest": {
                                 "url": {
@@ -1940,7 +2795,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "7962d7c3-d5a6-4b38-8f14-1794eace75e1",
+                            "id": "468a9d6f-4e93-454f-a914-5ed02d509f2e",
                             "name": "HTTP method not supported for this path",
                             "originalRequest": {
                                 "url": {
@@ -1984,7 +2839,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "fbbbfbe3-861f-461e-a2b9-79dd5bcfae4e",
+                            "id": "cf4336f1-619a-4df0-b127-fba491472007",
                             "name": "Validation Error",
                             "originalRequest": {
                                 "url": {
@@ -2034,7 +2889,7 @@
                     }
                 },
                 {
-                    "id": "8a2d07a1-cd73-499a-baab-415eba6d943f",
+                    "id": "d84ec1f3-cbe1-4e3c-9532-e229bbd0af5d",
                     "name": "Get Photo",
                     "request": {
                         "name": "Get Photo",
@@ -2081,7 +2936,7 @@
                     },
                     "response": [
                         {
-                            "id": "7d36db61-35af-490a-a50a-8f28bdd70839",
+                            "id": "90c6b7d1-6c46-428d-aefb-d0554c5dca46",
                             "name": "Successful Response",
                             "originalRequest": {
                                 "url": {
@@ -2125,7 +2980,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a8c6b236-49e0-430d-9bbd-1b527448c62b",
+                            "id": "5c559401-7fc6-4eca-bb59-c565701e899c",
                             "name": "Missing or invalid bearer token",
                             "originalRequest": {
                                 "url": {
@@ -2169,7 +3024,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "b5fb0370-0e8a-450f-9209-5cacdaf7a42e",
+                            "id": "b009b47a-cfd6-43ef-8860-0af60fa868f9",
                             "name": "Not found, or not owned by the caller",
                             "originalRequest": {
                                 "url": {
@@ -2213,7 +3068,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "4da374fb-436b-4efa-8334-423355132231",
+                            "id": "dede8cb8-b35a-4442-abb7-3745b3d1678a",
                             "name": "HTTP method not supported for this path",
                             "originalRequest": {
                                 "url": {
@@ -2257,7 +3112,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "25c7ab78-ac52-4f9f-b2c3-69e9fcdd1b6f",
+                            "id": "05fc1a99-8e36-4882-b143-cf3a4650f6d9",
                             "name": "Validation Error",
                             "originalRequest": {
                                 "url": {
@@ -2307,7 +3162,7 @@
                     }
                 },
                 {
-                    "id": "cc23e3af-5260-4137-aa30-82397032f95e",
+                    "id": "0e9d5cf4-38ce-4a75-b09f-21964b4b0f71",
                     "name": "Update Photo",
                     "request": {
                         "name": "Update Photo",
@@ -2367,7 +3222,7 @@
                     },
                     "response": [
                         {
-                            "id": "aaf7aff6-6141-4802-b8af-1909869551e1",
+                            "id": "ab5fa5f9-dc09-46c1-9ef0-9073661390a5",
                             "name": "Successful Response",
                             "originalRequest": {
                                 "url": {
@@ -2424,7 +3279,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "e9ee4147-4ed9-4377-921b-a7238e33de99",
+                            "id": "04508c81-0d1a-45ba-85e4-9be3e5f8afd5",
                             "name": "Malformed request body or unsupported image",
                             "originalRequest": {
                                 "url": {
@@ -2481,7 +3336,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9a5e96c1-d110-43e4-8e48-c0cfd6c8aa26",
+                            "id": "fb4c2810-b4cd-4367-889c-f6a8b3a0b120",
                             "name": "Missing or invalid bearer token",
                             "originalRequest": {
                                 "url": {
@@ -2538,7 +3393,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "84805599-8f09-46fe-8e44-3a0c7ac70117",
+                            "id": "36e3502a-a96c-4cae-ba57-244b111ce53d",
                             "name": "Not found, or not owned by the caller",
                             "originalRequest": {
                                 "url": {
@@ -2595,7 +3450,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "db869889-3f68-47b3-b3bf-86fbd6035725",
+                            "id": "6f24acad-6811-4853-b970-93fe1029014b",
                             "name": "HTTP method not supported for this path",
                             "originalRequest": {
                                 "url": {
@@ -2652,7 +3507,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "870ccf5e-1991-45ab-ad5e-25b7e0e491ab",
+                            "id": "4ad332f6-89d3-4f6a-aee2-3e5228909665",
                             "name": "Validation Error",
                             "originalRequest": {
                                 "url": {
@@ -2715,7 +3570,7 @@
                     }
                 },
                 {
-                    "id": "cf099733-50f9-4276-8d9c-f935c83e25fe",
+                    "id": "c6226f7c-6536-455a-acb8-dac9f529c130",
                     "name": "Get Photo File",
                     "request": {
                         "name": "Get Photo File",
@@ -2763,7 +3618,7 @@
                     },
                     "response": [
                         {
-                            "id": "b92555b3-1b15-4401-bcf5-f44f23348b75",
+                            "id": "25203899-bc31-4a75-b210-c4454bd2ea79",
                             "name": "Missing or invalid bearer token",
                             "originalRequest": {
                                 "url": {
@@ -2808,7 +3663,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "be2e3c96-5329-4226-a776-ec995d5b5228",
+                            "id": "940a030c-2c33-47cc-ae0b-1e57f3ab772c",
                             "name": "Not found, or not owned by the caller",
                             "originalRequest": {
                                 "url": {
@@ -2853,7 +3708,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "0f51fce2-1f58-4349-955b-501174884c11",
+                            "id": "baf252b8-f882-4f99-a2e3-993ec8634c84",
                             "name": "HTTP method not supported for this path",
                             "originalRequest": {
                                 "url": {
@@ -2898,7 +3753,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "5c9bdabf-27d1-403f-a7ef-8f031d6565c3",
+                            "id": "914d6df8-4211-4616-8616-02fd1d26fee8",
                             "name": "Validation Error",
                             "originalRequest": {
                                 "url": {
@@ -2949,7 +3804,422 @@
                     }
                 },
                 {
-                    "id": "d31e7373-dfa0-41aa-bb15-d384333e1a61",
+                    "id": "a6222249-43cb-4a50-bbfb-4670a5021897",
+                    "name": "Flag Photo",
+                    "request": {
+                        "name": "Flag Photo",
+                        "description": {},
+                        "url": {
+                            "path": [
+                                "photos",
+                                ":photo_id",
+                                "flag"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "type": "any",
+                                    "value": "<integer>",
+                                    "key": "photo_id",
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) ",
+                                        "type": "text/plain"
+                                    }
+                                }
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"reason\": \"nudity\",\n  \"note\": \"<string>\"\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                                {
+                                    "key": "token",
+                                    "value": "{{bearerToken}}"
+                                }
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "id": "9ac7e014-3653-4ea4-8b59-330eb6ddb174",
+                            "name": "Successful Response",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "photos",
+                                        ":photo_id",
+                                        "flag"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reason\": \"nudity\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Created",
+                            "code": 201,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"id\": \"<integer>\",\n  \"photo_id\": \"<integer>\",\n  \"reporter_id\": \"<integer>\",\n  \"reason\": \"violence\",\n  \"note\": \"<string>\",\n  \"status\": \"resolved\",\n  \"resolution\": \"dismissed\",\n  \"resolved_by_id\": \"<integer>\",\n  \"resolved_at\": \"<dateTime>\",\n  \"created_at\": \"<dateTime>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "ad38e534-74ae-4899-b3c8-2f0325bb9615",
+                            "name": "Missing or invalid bearer token",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "photos",
+                                        ":photo_id",
+                                        "flag"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reason\": \"nudity\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "a1e8ec3d-4db6-461c-9f6b-424e7de1d266",
+                            "name": "Not found, or not owned by the caller",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "photos",
+                                        ":photo_id",
+                                        "flag"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reason\": \"nudity\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "5438636f-794f-43ef-872a-3591a158c764",
+                            "name": "HTTP method not supported for this path",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "photos",
+                                        ":photo_id",
+                                        "flag"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reason\": \"nudity\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Method Not Allowed",
+                            "code": 405,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "b4afd396-d395-40f3-a93b-60486aa33dd0",
+                            "name": "Resource state conflict",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "photos",
+                                        ":photo_id",
+                                        "flag"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reason\": \"nudity\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Conflict",
+                            "code": 409,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "6de890a1-3a22-4503-a728-d94f33ddc7b0",
+                            "name": "Validation Error",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "photos",
+                                        ":photo_id",
+                                        "flag"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": []
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"reason\": \"nudity\",\n  \"note\": \"<string>\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                            "code": 422,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\"\n    },\n    {\n      \"loc\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"msg\": \"<string>\",\n      \"type\": \"<string>\"\n    }\n  ]\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "d309808c-c08e-4765-b1bf-aba7a4235d7d",
                     "name": "Get Thumbnail Status",
                     "request": {
                         "name": "Get Thumbnail Status",
@@ -2997,7 +4267,7 @@
                     },
                     "response": [
                         {
-                            "id": "2e9394e3-7137-471f-8a7c-67c933bb2edf",
+                            "id": "d95b23de-2f33-4e9f-a1d3-1a082741ea04",
                             "name": "Successful Response",
                             "originalRequest": {
                                 "url": {
@@ -3037,12 +4307,12 @@
                                     "value": "application/json"
                                 }
                             ],
-                            "body": "{\n  \"status\": \"processing\",\n  \"attempts\": 0,\n  \"error\": \"<string>\",\n  \"height\": \"<integer>\",\n  \"updated_at\": \"<dateTime>\",\n  \"width\": \"<integer>\"\n}",
+                            "body": "{\n  \"status\": \"failed\",\n  \"attempts\": 0,\n  \"error\": \"<string>\",\n  \"height\": \"<integer>\",\n  \"updated_at\": \"<dateTime>\",\n  \"width\": \"<integer>\"\n}",
                             "cookie": [],
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d6241dfb-2dea-49e4-a2bf-54149ab7e3a4",
+                            "id": "f09647a9-1888-4412-a868-d931339d1819",
                             "name": "Missing or invalid bearer token",
                             "originalRequest": {
                                 "url": {
@@ -3087,7 +4357,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "b5f539c1-ad2d-4610-b7dc-31573a57f39b",
+                            "id": "0465cf2f-74fd-4ac3-9ec4-06e6ba8183a4",
                             "name": "Not found, or not owned by the caller",
                             "originalRequest": {
                                 "url": {
@@ -3132,7 +4402,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "10492023-e947-4d21-9308-d03f3df26393",
+                            "id": "184af53b-657f-409e-a7ec-11c0d1e35df2",
                             "name": "HTTP method not supported for this path",
                             "originalRequest": {
                                 "url": {
@@ -3177,7 +4447,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "56429d5e-c03b-4988-abdb-1c390f2b9d7f",
+                            "id": "61c635b2-31a9-4c4f-aa4f-ca8e45005f48",
                             "name": "Validation Error",
                             "originalRequest": {
                                 "url": {
@@ -3228,7 +4498,7 @@
                     }
                 },
                 {
-                    "id": "5bce6ef9-1626-4b14-864a-f84014584245",
+                    "id": "9143df6a-1151-4aa6-bbd7-8c93b6f03a1e",
                     "name": "Get Thumbnail File",
                     "request": {
                         "name": "Get Thumbnail File",
@@ -3277,7 +4547,7 @@
                     },
                     "response": [
                         {
-                            "id": "561c3920-4ada-4141-aca2-70ae56f5942c",
+                            "id": "cd75600b-615f-43da-a7dc-78bf6b643394",
                             "name": "Missing or invalid bearer token",
                             "originalRequest": {
                                 "url": {
@@ -3323,7 +4593,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "1b5fb4a2-7804-437b-9a8f-1c0badac0cbe",
+                            "id": "acb33238-ef9b-40f3-af3d-8607bbe3d49e",
                             "name": "Not found, or not owned by the caller",
                             "originalRequest": {
                                 "url": {
@@ -3369,7 +4639,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "ccf0b0ef-eaa3-45bf-aaa5-c59bf503db25",
+                            "id": "7addc3d6-b6dc-4b22-bc96-4c76372eb2aa",
                             "name": "HTTP method not supported for this path",
                             "originalRequest": {
                                 "url": {
@@ -3415,7 +4685,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "20a65e6b-9aa0-4f18-97ff-077a79026304",
+                            "id": "a08a8ef4-e8c2-48c5-914d-bcae9acbf14a",
                             "name": "Resource state conflict",
                             "originalRequest": {
                                 "url": {
@@ -3461,7 +4731,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "8c193b8a-ff75-4d42-b79c-f3e3746fd8d8",
+                            "id": "d40d9ef3-eb01-4b20-b789-62f2dda07eae",
                             "name": "Validation Error",
                             "originalRequest": {
                                 "url": {
@@ -3523,7 +4793,7 @@
         }
     ],
     "info": {
-        "_postman_id": "6fc7a81b-e53e-4fb0-bb5d-c23255e7e2ad",
+        "_postman_id": "4e363f96-76ef-4394-94f8-6a1759acea3b",
         "name": "SnapTrack API",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": {

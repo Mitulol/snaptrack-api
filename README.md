@@ -3,6 +3,7 @@
 [![lint-test](https://github.com/Mitulol/snaptrack-api/actions/workflows/lint-test.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/lint-test.yml)
 [![contract-test](https://github.com/Mitulol/snaptrack-api/actions/workflows/contract-test.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/contract-test.yml)
 [![postman-smoke](https://github.com/Mitulol/snaptrack-api/actions/workflows/postman-smoke.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/postman-smoke.yml)
+[![integration-test](https://github.com/Mitulol/snaptrack-api/actions/workflows/integration-test.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/integration-test.yml)
 [![loadtest](https://github.com/Mitulol/snaptrack-api/actions/workflows/loadtest.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/loadtest.yml)
 
 A photo-tracking HTTP API: users upload photos, SnapTrack stores per-photo
@@ -101,8 +102,9 @@ hold 5432/6379); use `docker compose exec postgres psql -U snaptrack` for a shel
 python -m venv .venv && . .venv/bin/activate
 pip install -e ".[dev]"
 cp .env.example .env                 # point DATABASE_URL/REDIS_URL at your services
-pytest                               # 70 tests, ~20s on SQLite + fakeredis
-flake8 app tests scripts
+pytest                               # 94 tests, ~35s on SQLite + fakeredis
+pytest integration_tests/            # 7 more, real Postgres + Redis via pytest-docker
+flake8 app tests scripts integration_tests
 python scripts/export_openapi.py     # regenerate openapi/ after changing routes
 ```
 
@@ -126,19 +128,39 @@ the JSON imports into any Grafana without editing.
 ## Contract & smoke testing (Phase 1)
 
 - **OpenAPI 3.1 spec** is generated from the app and committed at
-  `openapi/openapi.json` + `openapi/openapi-v1.0.0.json`.
+  `openapi/openapi.json` + a versioned copy per release.
   `scripts/export_openapi.py --check` fails CI if the committed spec drifts from
-  the code.
+  the code; `oasdiff breaking` fails CI on any breaking change since `v1.0.0`.
 - **Schemathesis** (`.github/workflows/contract-test.yml`) runs nightly and on
-  PRs that touch the API. It brings up the Compose stack, seeds one photo,
-  fuzzes all 13 operations (examples + coverage + fuzzing + stateful phases),
-  and posts the summary to the workflow summary. Config and rationale for the
-  two disabled checks are in `schemathesis.toml`.
+  PRs that touch the API. It brings up the Compose stack, seeds an admin user +
+  a photo + a flag, fuzzes all 16 operations (examples + coverage + fuzzing +
+  stateful phases), and posts the summary to the workflow summary. Config and
+  rationale for the two disabled checks are in `schemathesis.toml`.
 - **Postman/Newman** (`.github/workflows/postman-smoke.yml`) runs a curated
   smoke suite (`postman/smoke.postman_collection.json`: auth flow, photo CRUD
   happy path, and 4xx cases — 28 assertions) against the freshly-built stack on
   every push to `main`. `postman/snaptrack.postman_collection.json` is the full
   collection generated from the spec.
+
+## Moderation feature (Phase 3, `v1.1.0`)
+
+Photo flagging + a moderator review queue, built **test-first**
+(`tests/test_moderation_service.py` was written and failing before the service
+existed). Full design: [`docs/moderation-feature.md`](docs/moderation-feature.md).
+
+- `POST /photos/{id}/flag` — the photo **owner** raises a flag (`reason` enum + note)
+- `GET /moderation/queue` — **admin** only; unresolved flags, newest first
+- `POST /moderation/{flag_id}/decision` — **admin** only; `dismiss` (keep) or
+  `action` (delete the photo). An `action` cascade-deletes the photo's flags but
+  the `moderation_actions` audit row — plain integer refs, no FK — survives.
+- **RBAC**, asserted both ways: non-owner flagging → 404, non-admin moderating → 403.
+- **OpenAPI diff** `v1.0.0 → v1.1.0-rc1` ([`docs/openapi-diff-v1.1.0-rc1.md`](docs/openapi-diff-v1.1.0-rc1.md)):
+  `oasdiff` reports **no breaking changes** (3 added endpoints) — a correct minor bump.
+  CI (`contract-test.yml`) fails on any breaking change vs. the released spec.
+- **Integration suite** (`integration_tests/`, `pytest-docker`): the real app
+  against a throwaway Postgres 16 + Redis 7 — real FK cascade, the audit row
+  outliving it, real Redis cache invalidation, and an Alembic
+  `downgrade→upgrade` round-trip + "migrations match the ORM" check.
 
 ## Load testing (Phase 2)
 
@@ -174,6 +196,9 @@ committed to `loadtest/results/summary.html`.
 | `GET`    | `/photos/{id}/thumbnail`      | 200     | 401, 404, 422               |
 | `GET`    | `/photos/{id}/thumbnail/file` | 200     | 401, 404, 409, 422          |
 | `GET`    | `/photos/{id}/file`           | 200     | 401, 404, 422               |
+| `POST`   | `/photos/{id}/flag`           | 201     | 400, 401, 404, 409, 422     |
+| `GET`    | `/moderation/queue`           | 200     | 401, 403, 422               |
+| `POST`   | `/moderation/{flag_id}/decision` | 200  | 400, 401, 403, 404, 409, 422 |
 | `GET`    | `/healthz` · `/readyz`        | 200     | `/readyz` → 503 when degraded |
 | `GET`    | `/metrics`                    | 200     | —                           |
 
@@ -186,12 +211,12 @@ Measured on this machine (Windows + WSL2, Docker Desktop, 12 vCPU / 15 GB).
 
 | Metric                                    | Value                                              |
 | ----------------------------------------- | -------------------------------------------------- |
-| Tests                                     | 70 passing (`pytest`)                              |
+| Tests                                     | 94 unit/integration (`pytest`) + 7 pytest-docker (real PG/Redis) |
 | Line + branch coverage                    | **100.0%** (`coverage`, branch on; CI gate 90%)    |
-| Lint                                      | flake8 clean (`app` + `tests` + `scripts`)         |
-| Contract test                             | Schemathesis: **0 failures** across 13 operations, ~900 generated cases (CI) |
-| Smoke suite                               | Newman: **28/28 assertions**, 18 requests          |
-| CI                                        | 4 workflows green — lint-test, contract-test, postman-smoke, loadtest |
+| Lint                                      | flake8 clean (`app` + `tests` + `scripts` + `integration_tests`) |
+| Contract test                             | Schemathesis: **0 failures** across 16 operations, ~1050 generated cases (CI) |
+| Smoke suite                               | Newman: **35/35 assertions**, 24 requests          |
+| CI                                        | 5 workflows green — lint-test, contract-test, postman-smoke, integration-test, loadtest |
 | **Load test @ reference load** (50 VUs, ~135 req/s) | **p95 269 ms**, error rate **0.00 %**, checks 100 % — [report](loadtest/results/summary.html) |
 | Load test — cached read / list / upload p95 | 213 ms / 240 ms / 348 ms                          |
 | Load test — saturation (200 VUs)          | ~207 req/s ceiling, p95 1.3 s, 0 % errors          |
@@ -254,27 +279,28 @@ iterations**. At the reference load the stack meets every SLO threshold.
 - [x] **Phase 0** — CRUD + JWT + async thumbnails + Redis cache + Compose + CI
 - [x] **Phase 1** — Prometheus + Grafana (RED), versioned OpenAPI 3.1, nightly Schemathesis contract tests, Postman/Newman smoke suite
 - [x] **Phase 2** — k6 load test + `loadtest.yml`, documented SLO, tuning ADR (88 → 207 req/s), committed HTML report, live k6 panels in Grafana
-- [ ] **Phase 3** — photo flag & moderation feature, built test-first, with RBAC
+- [x] **Phase 3** — photo flag & moderation feature built test-first, RBAC, OpenAPI `v1.1.0-rc1` diff (oasdiff, non-breaking), `pytest-docker` integration suite + `integration-test.yml`
 - [ ] **Phase 4** — moderation-notify task, Traefik canary release, `v1.1.0` tag, generated Python SDK
 
 ## Repository layout
 
 ```
 app/
-  api/            routers + dependencies + responses + AllowHeader middleware
+  api/            routers (auth, photos, moderation, health) + deps + responses + middleware
   core/           security (bcrypt, JWT)
-  models/         SQLAlchemy 2.0 typed models
+  models/         SQLAlchemy 2.0 typed models (User/Photo/Thumbnail/Flag/ModerationAction)
   schemas/        Pydantic request/response models (incl. ErrorResponse)
-  services/       photo + image domain logic (no framework coupling)
+  services/       photo + image + moderation domain logic (no framework coupling)
   workers/        Celery app + thumbnail task
-  alembic/        migrations
+  alembic/        migrations (0001 initial, 0002 moderation)
   cache.py        Redis cache-aside helper (degrades gracefully)
   storage.py      local blob storage (shared volume)
 observability/    prometheus.yml + Grafana provisioning + RED dashboard JSON
-openapi/          committed OpenAPI 3.1 spec (stable + versioned)
+openapi/          committed OpenAPI 3.1 spec (stable + v1.0.0 + v1.1.0-rc1)
 postman/          smoke collection, spec-generated collection, environment, fixtures
 loadtest/         k6 script + thresholds (== SLO), run.sh, committed results/
-docs/             perf_slo.md, adr/ (architecture decision records)
+integration_tests/  pytest-docker suite — real Postgres + Redis
+docs/             feature design, perf_slo.md, openapi diff, adr/
 tests/            pytest suite (unit + integration), 100% covered
 scripts/          smoke.sh (e2e), export_openapi.py (spec + drift check)
 ```

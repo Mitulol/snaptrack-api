@@ -40,11 +40,21 @@ jobs:
           diff -u /tmp/committed.json /tmp/live.json \
             || { echo "::error::openapi/openapi.json is stale — run scripts/export_openapi.py"; exit 1; }
 
-      - name: Seed one photo (id 1) for resource operations
+      - name: No breaking changes since v1.0.0 (oasdiff)
+        run: |
+          docker run --rm -v "$PWD/openapi:/specs" tufin/oasdiff breaking \
+            /specs/openapi-v1.0.0.json /specs/openapi.json --fail-on ERR
+          docker run --rm -v "$PWD/openapi:/specs" tufin/oasdiff changelog \
+            /specs/openapi-v1.0.0.json /specs/openapi.json >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Seed an admin user + photo (id 1) + flag (id 1)
         id: seed
         run: |
           curl -fsS -X POST localhost:8000/auth/register -H 'content-type: application/json' \
             -d '{"email":"contract@example.com","password":"password123"}' > /dev/null
+          # promote to admin so the /moderation/* operations reach past 403
+          docker compose exec -T postgres psql -U snaptrack -c \
+            "UPDATE users SET is_admin = true WHERE email = 'contract@example.com';"
           TOKEN=$(curl -fsS -X POST localhost:8000/auth/login -H 'content-type: application/json' \
             -d '{"email":"contract@example.com","password":"password123"}' | python -c 'import sys,json;print(json.load(sys.stdin)["access_token"])')
           python - <<'PY'
@@ -60,6 +70,8 @@ jobs:
           PY
           curl -fsS -X POST localhost:8000/photos -H "Authorization: Bearer $TOKEN" \
             -F "file=@/tmp/seed.png" > /dev/null
+          curl -fsS -X POST localhost:8000/photos/1/flag -H "Authorization: Bearer $TOKEN" \
+            -H 'content-type: application/json' -d '{"reason":"spam","note":"seed"}' > /dev/null
           echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
 
       - name: Run Schemathesis

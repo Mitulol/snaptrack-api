@@ -33,3 +33,6 @@ class Photo(Base):
     thumbnail: Mapped["Thumbnail"] = relationship(  # noqa: F821
         back_populates="photo", uselist=False, cascade="all, delete-orphan"
     )
+    flags: Mapped[list["Flag"]] = relationship(  # noqa: F821
+        back_populates="photo", cascade="all, delete-orphan"
+    )

@@ -1,0 +1,28 @@
+name: integration-test
+
+on:
+  pull_request:
+    paths:
+      - "app/**"
+      - "integration_tests/**"
+      - "alembic.ini"
+      - ".github/workflows/integration-test.yml"
+  schedule:
+    - cron: "27 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  pytest-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[dev]"
+
+      # pytest-docker spins its own throwaway Postgres 16 + Redis 7 from
+      # integration_tests/docker-compose.yml, on dynamically-assigned ports.
+      - name: Integration suite (real Postgres + Redis)
+        run: pytest integration_tests/ -o addopts="-ra" --no-header -v
