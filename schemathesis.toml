@@ -1,0 +1,28 @@
+# Schemathesis 4 configuration for the nightly contract-test run.
+# Invoked as: schemathesis run http://localhost:8000/openapi.json --config-file schemathesis.toml
+
+# Fail the run if the target schema isn't up within 30s (CI brings the stack up first).
+wait-for-schema = 30.0
+max-failures = 25
+
+# The CI job seeds exactly one photo (id 1) before the run so the
+# /photos/{photo_id} operations exercise their success paths, not just 404.
+[parameters]
+photo_id = 1
+
+[generation]
+# The API intentionally ignores unknown query parameters (standard REST
+# behaviour); don't treat their acceptance as a contract violation.
+allow-extra-parameters = false
+
+[checks]
+# format:email / multipart binary are enforced by the API, but Hypothesis does
+# not reliably honour those formats when generating "valid" data, so this check
+# produces false positives. Body validation is still exercised via
+# response_schema_conformance + negative_data_rejection.
+positive_data_acceptance = { enabled = false }
+# Flag any response slower than 2s seen during fuzzing.
+max_response_time = 2.0
+
+[phases.stateful]
+enabled = true

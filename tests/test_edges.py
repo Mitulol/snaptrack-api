@@ -96,6 +96,26 @@ def test_cache_delete_noop_without_keys():
     cache.cache_delete()  # must not raise
 
 
+def test_list_photos_rejects_absurd_offset(client, auth_headers):
+    # A huge offset used to overflow Postgres bigint -> unhandled 500.
+    resp = client.get("/photos?offset=999999999999999999999", headers=auth_headers())
+    assert resp.status_code == 422
+
+
+def test_405_allow_header_lists_every_method_on_the_path(client, auth_headers):
+    resp = client.request("PUT", "/photos/1", headers=auth_headers())
+    assert resp.status_code == 405
+    allowed = {m.strip() for m in resp.headers["allow"].split(",")}
+    assert {"GET", "PATCH", "DELETE"} <= allowed
+
+
+def test_405_allow_header_on_collection(client, auth_headers):
+    resp = client.request("DELETE", "/photos", headers=auth_headers())
+    assert resp.status_code == 405
+    allowed = {m.strip() for m in resp.headers["allow"].split(",")}
+    assert {"GET", "POST"} <= allowed
+
+
 def test_cache_client_is_lazily_constructed():
     cache.set_cache_client(None)
     try:

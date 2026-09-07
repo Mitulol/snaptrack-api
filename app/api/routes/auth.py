@@ -4,6 +4,7 @@ from fastapi import APIRouter, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
+from app.api import responses
 from app.api.deps import CurrentUser, DbSession
 from app.core.security import create_access_token, hash_password, verify_password
 from app.models import User
@@ -12,7 +13,12 @@ from app.schemas.auth import Token, UserCreate, UserLogin, UserOut
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/register", response_model=UserOut, status_code=status.HTTP_201_CREATED)
+@router.post(
+    "/register",
+    response_model=UserOut,
+    status_code=status.HTTP_201_CREATED,
+    responses={**responses.CONFLICT, **responses.JSON_BODY},
+)
 def register(payload: UserCreate, db: DbSession) -> User:
     user = User(email=payload.email.lower(), hashed_password=hash_password(payload.password))
     db.add(user)
@@ -27,7 +33,11 @@ def register(payload: UserCreate, db: DbSession) -> User:
     return user
 
 
-@router.post("/login", response_model=Token)
+@router.post(
+    "/login",
+    response_model=Token,
+    responses={**responses.UNAUTHORIZED, **responses.FORBIDDEN, **responses.JSON_BODY},
+)
 def login(payload: UserLogin, db: DbSession) -> Token:
     user = db.scalar(select(User).where(User.email == payload.email.lower()))
     if user is None or not verify_password(payload.password, user.hashed_password):
@@ -39,6 +49,6 @@ def login(payload: UserLogin, db: DbSession) -> Token:
     return Token(access_token=create_access_token(user.id))
 
 
-@router.get("/me", response_model=UserOut)
+@router.get("/me", response_model=UserOut, responses={**responses.AUTH})
 def me(current_user: CurrentUser) -> User:
     return current_user

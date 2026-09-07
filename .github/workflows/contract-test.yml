@@ -1,0 +1,103 @@
+name: contract-test
+
+on:
+  schedule:
+    - cron: "17 6 * * *"          # nightly, 06:17 UTC
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "app/**"
+      - "openapi/**"
+      - "schemathesis.toml"
+      - ".github/workflows/contract-test.yml"
+
+jobs:
+  schemathesis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Schemathesis
+        run: pip install "schemathesis==4.26.0"
+
+      - name: Bring up the Compose stack
+        run: |
+          docker compose up -d --build api worker
+          for i in $(seq 1 30); do
+            curl -fsS localhost:8000/healthz && break
+            sleep 2
+          done
+          curl -fsS localhost:8000/readyz
+
+      - name: Verify committed OpenAPI spec matches the running API
+        run: |
+          curl -fsS localhost:8000/openapi.json | python -m json.tool --sort-keys > /tmp/live.json
+          python -m json.tool --sort-keys openapi/openapi.json > /tmp/committed.json
+          diff -u /tmp/committed.json /tmp/live.json \
+            || { echo "::error::openapi/openapi.json is stale — run scripts/export_openapi.py"; exit 1; }
+
+      - name: Seed one photo (id 1) for resource operations
+        id: seed
+        run: |
+          curl -fsS -X POST localhost:8000/auth/register -H 'content-type: application/json' \
+            -d '{"email":"contract@example.com","password":"password123"}' > /dev/null
+          TOKEN=$(curl -fsS -X POST localhost:8000/auth/login -H 'content-type: application/json' \
+            -d '{"email":"contract@example.com","password":"password123"}' | python -c 'import sys,json;print(json.load(sys.stdin)["access_token"])')
+          python - <<'PY'
+          import zlib, struct
+          w = h = 64
+          def chunk(t, d):
+              return struct.pack(">I", len(d)) + t + d + struct.pack(">I", zlib.crc32(t + d) & 0xFFFFFFFF)
+          raw = b"".join(b"\x00" + b"\x46\x82\xb4" * w for _ in range(h))
+          png = (b"\x89PNG\r\n\x1a\n"
+                 + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
+                 + chunk(b"IDAT", zlib.compress(raw)) + chunk(b"IEND", b""))
+          open("/tmp/seed.png", "wb").write(png)
+          PY
+          curl -fsS -X POST localhost:8000/photos -H "Authorization: Bearer $TOKEN" \
+            -F "file=@/tmp/seed.png" > /dev/null
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Run Schemathesis
+        id: contract
+        run: |
+          set -o pipefail
+          schemathesis --config-file schemathesis.toml run \
+            http://localhost:8000/openapi.json \
+            -H "Authorization: Bearer ${{ steps.seed.outputs.token }}" \
+            --max-examples 40 \
+            --report junit --report-junit-path schemathesis-junit.xml \
+            2>&1 | tee schemathesis-output.txt
+
+      - name: Publish results to the workflow summary
+        if: always()
+        run: |
+          {
+            echo "## Schemathesis contract test"
+            echo ""
+            echo "Target: \`http://localhost:8000/openapi.json\` (OpenAPI 3.1, 13 operations)"
+            echo ""
+            echo '```'
+            sed -n '/=== SUMMARY ===/,$p' schemathesis-output.txt || tail -40 schemathesis-output.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Dump API logs on failure
+        if: failure()
+        run: docker compose logs api worker
+
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: schemathesis-report
+          path: |
+            schemathesis-junit.xml
+            schemathesis-output.txt
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v

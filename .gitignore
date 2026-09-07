@@ -16,6 +16,16 @@ venv/
 coverage.xml
 htmlcov/
 .mypy_cache/
+pytest.xml
+
+# Contract / smoke test artifacts
+.schemathesis/
+.hypothesis/
+schemathesis-report/
+schemathesis-junit.xml
+schemathesis-output.txt
+newman-report.json
+newman-junit.xml
 
 # Local blob storage
 _storage/

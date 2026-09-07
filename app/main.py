@@ -8,6 +8,8 @@ from fastapi import FastAPI
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from app import __version__
+from app.api import responses as api_responses
+from app.api.middleware import AllowHeaderMiddleware
 from app.api.routes import auth, health, photos
 from app.config import settings
 
@@ -29,9 +31,11 @@ def create_app() -> FastAPI:
         ),
     )
 
+    app.add_middleware(AllowHeaderMiddleware)
+
     app.include_router(health.router)
-    app.include_router(auth.router)
-    app.include_router(photos.router)
+    app.include_router(auth.router, responses={**api_responses.COMMON})
+    app.include_router(photos.router, responses={**api_responses.COMMON})
 
     # Phase 1 hook: /metrics with request-count + latency histograms.
     Instrumentator(

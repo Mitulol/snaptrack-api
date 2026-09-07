@@ -6,3 +6,4 @@ flake8==7.1.1
 flake8-bugbear==24.12.12
 fakeredis==2.26.2
 freezegun==1.5.1
+schemathesis==4.26.0

@@ -1,0 +1,86 @@
+name: postman-smoke
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - "app/**"
+      - "postman/**"
+      - "docker-compose.yml"
+      - "Dockerfile"
+      - ".github/workflows/postman-smoke.yml"
+  schedule:
+    - cron: "42 6 * * *"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Bring up the Compose stack (simulated deploy)
+        run: |
+          docker compose up -d --build api worker
+          for i in $(seq 1 30); do
+            curl -fsS localhost:8000/healthz && break
+            sleep 2
+          done
+          curl -fsS localhost:8000/readyz
+
+      - name: Run Newman smoke suite
+        run: |
+          npx --yes newman@6.2.1 run postman/smoke.postman_collection.json \
+            -e postman/local.postman_environment.json \
+            --working-dir postman \
+            --reporters cli,json,junit \
+            --reporter-json-export newman-report.json \
+            --reporter-junit-export newman-junit.xml
+
+      - name: Publish results to the workflow summary
+        if: always()
+        run: |
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json, pathlib
+          p = pathlib.Path("newman-report.json")
+          print("## Postman smoke suite\n")
+          if not p.exists():
+              print("_Newman produced no report (stack failed to start?)_")
+              raise SystemExit
+          run = json.loads(p.read_text())["run"]
+          s = run["stats"]
+          print(f"- Requests: {s['requests']['total']}  |  Assertions: "
+                f"{s['assertions']['total'] - s['assertions']['failed']}/{s['assertions']['total']} passed")
+          dur = run.get("timings", {}).get("responseAverage")
+          if dur:
+              print(f"- Avg response time: {dur:.0f} ms\n")
+          fails = run.get("failures", [])
+          if fails:
+              print("\n| # | request | assertion |\n|---|---|---|")
+              for i, f in enumerate(fails, 1):
+                  src = f.get("source", {}).get("name", "?")
+                  err = f.get("error", {}).get("message", "").replace("\n", " ")
+                  print(f"| {i} | {src} | {err} |")
+          else:
+              print("\n**All assertions passed.**")
+          PY
+
+      - name: Dump API logs on failure
+        if: failure()
+        run: docker compose logs api worker
+
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: newman-report
+          path: |
+            newman-report.json
+            newman-junit.xml
+
+      - name: Tear down
+        if: always()
+        run: docker compose down -v

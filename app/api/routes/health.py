@@ -15,7 +15,10 @@ def healthz() -> dict:
     return {"status": "ok"}
 
 
-@router.get("/readyz")
+@router.get(
+    "/readyz",
+    responses={503: {"description": "One or more dependencies are unreachable"}},
+)
 def readyz(db: DbSession, response: Response) -> dict:
     """Readiness: dependencies (Postgres, Redis) are reachable."""
     checks: dict[str, str] = {}

@@ -18,7 +18,10 @@ def test_upload_rejects_non_image(client, auth_headers):
     headers = auth_headers()
     files = {"file": ("notes.txt", b"just some text", "text/plain")}
     resp = client.post("/photos", headers=headers, files=files)
-    assert resp.status_code == 422
+    # 400 (not 422): 422 is reserved for request-model validation, this is a
+    # business rejection of the uploaded bytes.
+    assert resp.status_code == 400
+    assert resp.json()["detail"]
 
 
 def test_upload_requires_auth(client, make_image):

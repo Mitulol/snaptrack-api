@@ -20,7 +20,7 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements-dev.txt
-      - run: flake8 app tests
+      - run: flake8 app tests scripts
 
   test:
     runs-on: ubuntu-latest
@@ -51,6 +51,8 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -e ".[dev]"
+      - name: OpenAPI spec is in sync with the code
+        run: python scripts/export_openapi.py --check
       - name: pytest (integration against real Postgres + Redis)
         run: pytest --cov-fail-under=90 --cov-report=term --junitxml=pytest.xml
       - name: Coverage summary
