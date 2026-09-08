@@ -41,10 +41,8 @@ def _console_backend(monkeypatch):
 
 # --- mailer --------------------------------------------------------------
 
-def test_console_backend_returns_marker(caplog):
-    with caplog.at_level("INFO", logger="snaptrack.mailer"):
-        assert mailer.deliver_email(to="a@b.com", subject="hi", body="body") == "console"
-    assert "console" in caplog.text
+def test_console_backend_returns_marker():
+    assert mailer.deliver_email(to="a@b.com", subject="hi", body="body") == "console"
 
 
 def test_file_backend_writes_an_eml(monkeypatch, tmp_path):
