@@ -4,6 +4,7 @@
 #   ./loadtest/run.sh                 # 50 VUs, ~90s; HTML + JSON report in loadtest/results/
 #   VUS=100 ./loadtest/run.sh         # override VU count
 #   PROM_RW=1 ./loadtest/run.sh       # also stream metrics to Prometheus (for the Grafana panel)
+#   BASE_URL=http://traefik:80 ./loadtest/run.sh   # drive traffic through the canary split
 #
 # Requires `docker compose up -d` first (the api service must be healthy).
 set -euo pipefail
@@ -11,6 +12,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 NETWORK="${NETWORK:-snaptrack_default}"
+BASE_URL="${BASE_URL:-http://api:8000}"
 VUS="${VUS:-50}"
 USER_POOL="${USER_POOL:-40}"
 
@@ -25,7 +27,7 @@ docker_args=(
   --rm
   --network "$NETWORK"
   --user "$(id -u):$(id -g)"
-  -e BASE_URL=http://api:8000
+  -e "BASE_URL=$BASE_URL"
   -e "VUS=$VUS"
   -e "USER_POOL=$USER_POOL"
   -e "SLEEP_MAX=${SLEEP_MAX:-0.6}"
@@ -46,5 +48,5 @@ if [[ "${PROM_RW:-0}" == "1" ]]; then
 fi
 k6_args+=(/work/loadtest/k6/script.js)
 
-echo "k6: $VUS VUs -> http://api:8000 on $NETWORK  (prom-rw=${PROM_RW:-0})"
+echo "k6: $VUS VUs -> $BASE_URL on $NETWORK  (prom-rw=${PROM_RW:-0})"
 exec docker run "${docker_args[@]}" grafana/k6 "${k6_args[@]}"

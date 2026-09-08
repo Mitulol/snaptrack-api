@@ -13,3 +13,9 @@ scrape_configs:
   - job_name: prometheus
     static_configs:
       - targets: ["localhost:9090"]
+
+  # Only up under `docker compose --profile canary`; otherwise this target is
+  # simply DOWN. Traefik exposes the canary stable-vs-next split here.
+  - job_name: traefik
+    static_configs:
+      - targets: ["traefik:8082"]

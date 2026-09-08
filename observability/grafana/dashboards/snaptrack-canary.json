@@ -1,0 +1,201 @@
+{
+  "uid": "snaptrack-canary",
+  "title": "SnapTrack API — Canary",
+  "editable": true,
+  "graphTooltip": 1,
+  "schemaVersion": 39,
+  "style": "dark",
+  "timezone": "browser",
+  "refresh": "5s",
+  "time": { "from": "now-15m", "to": "now" },
+  "annotations": { "list": [] },
+  "templating": {
+    "list": [
+      {
+        "type": "datasource",
+        "name": "DS_PROMETHEUS",
+        "label": "Prometheus",
+        "query": "prometheus",
+        "current": { "text": "Prometheus", "value": "snaptrack-prom" },
+        "hide": 0
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "row",
+      "title": "Canary split — stable vs next (Traefik metrics)",
+      "id": 1,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }
+    },
+    {
+      "type": "stat",
+      "title": "Stable traffic share (%)",
+      "id": 2,
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 1 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "min": 0,
+          "max": 100,
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "blue", "value": null } ] }
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": [ "lastNotNull" ] }, "colorMode": "value", "graphMode": "area" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "expr": "100 * sum(rate(traefik_service_requests_total{service=\"snaptrack-stable@file\"}[$__rate_interval])) / clamp_min(sum(rate(traefik_service_requests_total{service=~\"snaptrack-(stable|next)@file\"}[$__rate_interval])), 0.001)"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Canary (next) traffic share (%)",
+      "id": 3,
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 1 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "min": 0,
+          "max": 100,
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 25 } ] }
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": [ "lastNotNull" ] }, "colorMode": "value", "graphMode": "area" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "expr": "100 * sum(rate(traefik_service_requests_total{service=\"snaptrack-next@file\"}[$__rate_interval])) / clamp_min(sum(rate(traefik_service_requests_total{service=~\"snaptrack-(stable|next)@file\"}[$__rate_interval])), 0.001)"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "5xx rate — next (%)",
+      "id": 4,
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 1 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 2,
+          "min": 0,
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 0.1 }, { "color": "red", "value": 1 } ] }
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": [ "lastNotNull" ] }, "colorMode": "background", "graphMode": "area" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "expr": "100 * (sum(rate(traefik_service_requests_total{service=\"snaptrack-next@file\",code=~\"5..\"}[$__rate_interval])) or vector(0)) / clamp_min(sum(rate(traefik_service_requests_total{service=\"snaptrack-next@file\"}[$__rate_interval])), 0.001)"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "p95 delta — next minus stable (ms)",
+      "id": 5,
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 1 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "decimals": 0,
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 30 }, { "color": "red", "value": 75 } ] }
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": [ "lastNotNull" ] }, "colorMode": "value", "graphMode": "area" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "expr": "1000 * (histogram_quantile(0.95, sum by (le) (rate(traefik_service_request_duration_seconds_bucket{service=\"snaptrack-next@file\"}[$__rate_interval]))) - histogram_quantile(0.95, sum by (le) (rate(traefik_service_request_duration_seconds_bucket{service=\"snaptrack-stable@file\"}[$__rate_interval]))))"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Requests/sec by backend",
+      "id": 6,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 7 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "drawStyle": "line", "fillOpacity": 15, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "table", "placement": "bottom", "calcs": [ "mean", "lastNotNull" ] }, "tooltip": { "mode": "multi" } },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "expr": "sum by (service) (rate(traefik_service_requests_total{service=~\"snaptrack-(stable|next)@file\"}[$__rate_interval]))",
+          "legendFormat": "{{service}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Error rate by backend (%)",
+      "id": 7,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 7 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "custom": { "drawStyle": "line", "fillOpacity": 10 } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "table", "placement": "bottom", "calcs": [ "mean", "max" ] }, "tooltip": { "mode": "multi" } },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "expr": "100 * sum by (service) (rate(traefik_service_requests_total{service=~\"snaptrack-(stable|next)@file\",code=~\"5..\"}[$__rate_interval])) / clamp_min(sum by (service) (rate(traefik_service_requests_total{service=~\"snaptrack-(stable|next)@file\"}[$__rate_interval])), 0.001)",
+          "legendFormat": "{{service}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "p95 request duration by backend",
+      "id": 8,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 15 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "fieldConfig": { "defaults": { "unit": "s", "custom": { "drawStyle": "line", "fillOpacity": 10 } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "table", "placement": "bottom", "calcs": [ "mean", "max" ] }, "tooltip": { "mode": "multi" } },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "expr": "histogram_quantile(0.95, sum by (le, service) (rate(traefik_service_request_duration_seconds_bucket{service=~\"snaptrack-(stable|next)@file\"}[$__rate_interval])))",
+          "legendFormat": "p95 {{service}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Requests by status code (next)",
+      "id": 9,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 15 },
+      "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+      "fieldConfig": { "defaults": { "unit": "reqps", "custom": { "drawStyle": "line", "fillOpacity": 15, "stacking": { "mode": "normal" } } }, "overrides": [] },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "${DS_PROMETHEUS}" },
+          "expr": "sum by (code) (rate(traefik_service_requests_total{service=\"snaptrack-next@file\"}[$__rate_interval]))",
+          "legendFormat": "{{code}}"
+        }
+      ]
+    }
+  ]
+}

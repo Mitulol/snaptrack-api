@@ -59,6 +59,53 @@ services:
       timeout: 5s
       retries: 5
 
+  # Canary build of the API. Same image, same data plane (Postgres + Redis +
+  # photo volume) as `api`; Traefik routes ~10% of traffic here. Only starts
+  # with `--profile canary`. See docs/canary-report.md.
+  api-next:
+    build: .
+    command: ["api"]
+    profiles: ["canary"]
+    environment:
+      DATABASE_URL: postgresql+psycopg2://snaptrack:snaptrack@postgres:5432/snaptrack
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-dev-secret-change-me}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-6}
+      DB_POOL_SIZE: 5
+      DB_MAX_OVERFLOW: 5
+      RELEASE_CHANNEL: next
+    volumes:
+      - photo_storage:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_healthy   # let `api` run the migrations first
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Reverse proxy for the canary split (stable 90 / next 10). `--profile canary`.
+  traefik:
+    image: traefik:v3.3
+    profiles: ["canary"]
+    ports:
+      - "8080:80"      # canary-split entrypoint — send load here
+      - "8081:8080"    # Traefik dashboard (http://localhost:8081/dashboard/)
+    volumes:
+      - ./deploy/traefik:/etc/traefik:ro
+    depends_on:
+      api:
+        condition: service_healthy
+      api-next:
+        condition: service_healthy
+
   worker:
     build: .
     command: ["worker"]
