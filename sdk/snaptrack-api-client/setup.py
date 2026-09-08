@@ -1,0 +1,18 @@
+import pathlib
+
+from setuptools import find_packages, setup
+
+here = pathlib.Path(__file__).parent.resolve()
+long_description = (here / "README.md").read_text(encoding="utf-8")
+
+setup(
+    name="snap-track-api-client",
+    version="1.1.0",
+    description="A client library for accessing SnapTrack API",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    packages=find_packages(),
+    python_requires=">=3.11, <4",
+    install_requires=["httpx >= 0.23.1, < 0.29.0", "attrs >= 22.2.0"],
+    package_data={"snap_track_api_client": ["py.typed"]},
+)

@@ -5,6 +5,7 @@
 [![postman-smoke](https://github.com/Mitulol/snaptrack-api/actions/workflows/postman-smoke.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/postman-smoke.yml)
 [![integration-test](https://github.com/Mitulol/snaptrack-api/actions/workflows/integration-test.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/integration-test.yml)
 [![loadtest](https://github.com/Mitulol/snaptrack-api/actions/workflows/loadtest.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/loadtest.yml)
+[![sdk-gen](https://github.com/Mitulol/snaptrack-api/actions/workflows/sdk-gen.yml/badge.svg)](https://github.com/Mitulol/snaptrack-api/actions/workflows/sdk-gen.yml)
 
 A photo-tracking HTTP API: users upload photos, SnapTrack stores per-photo
 metadata, derives thumbnails on a background worker, and serves hot metadata
@@ -75,7 +76,9 @@ This repository is developed in phases; see [Roadmap](#roadmap) for status.
 | Smoke testing      | Postman collection + Newman (post-deploy in CI)               |
 | Load testing       | k6 (Docker), Prometheus remote-write for live Grafana panels  |
 | Packaging          | Docker Compose; single image runs both `api` and `worker`     |
-| CI                 | GitHub Actions — flake8, pytest vs. real Postgres/Redis, spec drift, contract, smoke, load |
+| Canary             | Traefik v3 weighted split (compose `--profile canary`)        |
+| SDK                | `openapi-python-client` (typed, generated on release)         |
+| CI                 | GitHub Actions — flake8, pytest vs. real Postgres/Redis, spec drift, contract, smoke, load, SDK build |
 
 ## Running it locally
 
@@ -102,8 +105,8 @@ hold 5432/6379); use `docker compose exec postgres psql -U snaptrack` for a shel
 python -m venv .venv && . .venv/bin/activate
 pip install -e ".[dev]"
 cp .env.example .env                 # point DATABASE_URL/REDIS_URL at your services
-pytest                               # 94 tests, ~35s on SQLite + fakeredis
-pytest integration_tests/            # 7 more, real Postgres + Redis via pytest-docker
+pytest                               # 112 tests, ~50s on SQLite + fakeredis
+pytest integration_tests/            # 8 more, real Postgres + Redis via pytest-docker
 flake8 app tests scripts integration_tests
 python scripts/export_openapi.py     # regenerate openapi/ after changing routes
 ```
@@ -154,13 +157,51 @@ existed). Full design: [`docs/moderation-feature.md`](docs/moderation-feature.md
   `action` (delete the photo). An `action` cascade-deletes the photo's flags but
   the `moderation_actions` audit row — plain integer refs, no FK — survives.
 - **RBAC**, asserted both ways: non-owner flagging → 404, non-admin moderating → 403.
-- **OpenAPI diff** `v1.0.0 → v1.1.0-rc1` ([`docs/openapi-diff-v1.1.0-rc1.md`](docs/openapi-diff-v1.1.0-rc1.md)):
+- **OpenAPI diff** `v1.0.0 → v1.1.0` ([`docs/openapi-diff-v1.1.0.md`](docs/openapi-diff-v1.1.0.md)):
   `oasdiff` reports **no breaking changes** (3 added endpoints) — a correct minor bump.
   CI (`contract-test.yml`) fails on any breaking change vs. the released spec.
 - **Integration suite** (`integration_tests/`, `pytest-docker`): the real app
   against a throwaway Postgres 16 + Redis 7 — real FK cascade, the audit row
   outliving it, real Redis cache invalidation, and an Alembic
   `downgrade→upgrade` round-trip + "migrations match the ORM" check.
+
+### Decision notifications (Phase 4)
+
+A moderation decision writes the affected reporter(s) a message via a
+**transactional outbox**: `moderation_service.decide` creates `notifications`
+rows *in the same transaction* as the resolution, then — only after that commit
+— enqueues one `notifications.deliver` Celery task per row. Delivery is
+pluggable (`NOTIFICATION_BACKEND`): `console` logs it (default / CI),
+`file` drops an RFC-822 `.eml`. A retryable failure leaves the row `failed`
+with the error recorded; the task retries with backoff, then gives up.
+Photo/flag refs on the row are plain integers, so an `action` decision (which
+deletes both) doesn't strand the notification.
+
+## Canary release (Phase 4)
+
+`docker compose --profile canary up -d --build` (or `make canary`) adds
+**Traefik v3** in front of two API builds — `api` (stable, 90 %) and `api-next`
+(canary, 10 %) — with a weighted load-balancer service in
+[`deploy/traefik/dynamic.yml`](deploy/traefik/dynamic.yml) that re-weights live.
+Traefik's Prometheus metrics feed the **`SnapTrack API — Canary`** Grafana
+dashboard (per-backend traffic share, error rate, p95).
+
+Full write-up with real numbers: [`docs/canary-report.md`](docs/canary-report.md).
+A 50-VU / 120-s k6 run *through the split*: **9.9986 %** of 35.5 k requests hit
+the canary, **0** × 5xx on either backend, canary p50/p95 within ~2 ms of
+stable → promoted and tagged `v1.1.0`. (Both builds are the same commit, so this
+canary validated the rollout mechanism + that the additive changes don't
+regress the hot path — not an A/B of two app versions.)
+
+## Python SDK (Phase 4)
+
+[`sdk/`](sdk/) is a typed client (`httpx` + `attrs`, `py.typed`) **generated**
+from `openapi/openapi.json` with `openapi-python-client`.
+`.github/workflows/sdk-gen.yml` regenerates it, builds an sdist + wheel, and
+uploads them to the GitHub Release on publish; on PRs touching the spec it
+dry-runs the generate + build + import and fails if `sdk/` is stale.
+
+## Load testing (Phase 2)
 
 ## Load testing (Phase 2)
 
@@ -211,15 +252,16 @@ Measured on this machine (Windows + WSL2, Docker Desktop, 12 vCPU / 15 GB).
 
 | Metric                                    | Value                                              |
 | ----------------------------------------- | -------------------------------------------------- |
-| Tests                                     | 94 unit/integration (`pytest`) + 7 pytest-docker (real PG/Redis) |
+| Tests                                     | 112 unit/integration (`pytest`) + 8 pytest-docker (real PG/Redis) |
 | Line + branch coverage                    | **100.0%** (`coverage`, branch on; CI gate 90%)    |
 | Lint                                      | flake8 clean (`app` + `tests` + `scripts` + `integration_tests`) |
 | Contract test                             | Schemathesis: **0 failures** across 16 operations, ~1050 generated cases (CI) |
 | Smoke suite                               | Newman: **35/35 assertions**, 24 requests          |
-| CI                                        | 5 workflows green — lint-test, contract-test, postman-smoke, integration-test, loadtest |
+| CI                                        | 6 workflows green — lint-test, contract-test, postman-smoke, integration-test, loadtest, sdk-gen |
 | **Load test @ reference load** (50 VUs, ~135 req/s) | **p95 269 ms**, error rate **0.00 %**, checks 100 % — [report](loadtest/results/summary.html) |
 | Load test — cached read / list / upload p95 | 213 ms / 240 ms / 348 ms                          |
 | Load test — saturation (200 VUs)          | ~207 req/s ceiling, p95 1.3 s, 0 % errors          |
+| **Canary** (50 VUs through Traefik split) | canary got **9.9986 %** of 35.5 k reqs, **0** × 5xx, p95 Δ ≈ −2 ms vs stable — [report](docs/canary-report.md) |
 | Thumbnail latency (320×240 PNG, local)    | source→`ready` in ~1–2 s end to end                |
 | `GET /photos/{id}` cache hit, 1 client    | p50 ≈ 3.1 ms, p90 ≈ 3.9 ms (n=500)                 |
 
@@ -264,6 +306,24 @@ Findings + fixes (full write-up: [ADR 0001](docs/adr/0001-load-test-tuning.md)):
 After tuning, the identical 200 VU test: **207 req/s, 0 errors, 0 interrupted
 iterations**. At the reference load the stack meets every SLO threshold.
 
+### What broke while building Phases 3–4
+
+- **SQLite silently ignored `ON DELETE CASCADE`** in tests — it needs
+  `PRAGMA foreign_keys=ON` per connection. The `action`-decision test only
+  passed once a `connect` event listener set it, which also made the whole
+  suite's referential behaviour match Postgres.
+- **Schemathesis re-found the Phase 1 gap** on the two new POST routes:
+  malformed JSON body → `400` (Starlette) was undocumented. Added the shared
+  `JSON_BODY` responses fragment.
+- **`pytest-docker` can't live under `tests/`** — that package's `conftest.py`
+  pins env + imports `app` at module load. Integration tests are a separate
+  top-level `integration_tests/` package with lazy `app` imports.
+- **Canary latency numbers are bucket-interpolated.** Traefik's default
+  duration histogram buckets are `0.1 / 0.3 / 1.2 / 5.0 s`, so per-backend
+  quantiles from Prometheus are coarse; k6's client-side p95 is the exact
+  figure. The canary's *distribution* comparison (≥ 98 % of requests < 100 ms
+  on both) is the real signal.
+
 ### What broke while building Phase 0
 
 - **`passlib[bcrypt]` import error** with bcrypt ≥ 4.1 (`__about__` removed).
@@ -279,8 +339,8 @@ iterations**. At the reference load the stack meets every SLO threshold.
 - [x] **Phase 0** — CRUD + JWT + async thumbnails + Redis cache + Compose + CI
 - [x] **Phase 1** — Prometheus + Grafana (RED), versioned OpenAPI 3.1, nightly Schemathesis contract tests, Postman/Newman smoke suite
 - [x] **Phase 2** — k6 load test + `loadtest.yml`, documented SLO, tuning ADR (88 → 207 req/s), committed HTML report, live k6 panels in Grafana
-- [x] **Phase 3** — photo flag & moderation feature built test-first, RBAC, OpenAPI `v1.1.0-rc1` diff (oasdiff, non-breaking), `pytest-docker` integration suite + `integration-test.yml`
-- [ ] **Phase 4** — moderation-notify task, Traefik canary release, `v1.1.0` tag, generated Python SDK
+- [x] **Phase 3** — photo flag & moderation feature built test-first, RBAC, OpenAPI `v1.1.0` diff (oasdiff, non-breaking), `pytest-docker` integration suite + `integration-test.yml`
+- [x] **Phase 4** — moderation-decision notifications (outbox + Celery), Traefik 90/10 canary + report, tagged `v1.1.0`, generated Python SDK + `sdk-gen.yml`
 
 ## Repository layout
 
@@ -288,19 +348,21 @@ iterations**. At the reference load the stack meets every SLO threshold.
 app/
   api/            routers (auth, photos, moderation, health) + deps + responses + middleware
   core/           security (bcrypt, JWT)
-  models/         SQLAlchemy 2.0 typed models (User/Photo/Thumbnail/Flag/ModerationAction)
+  models/         SQLAlchemy 2.0 typed models (User/Photo/Thumbnail/Flag/ModerationAction/Notification)
   schemas/        Pydantic request/response models (incl. ErrorResponse)
-  services/       photo + image + moderation domain logic (no framework coupling)
-  workers/        Celery app + thumbnail task
-  alembic/        migrations (0001 initial, 0002 moderation)
+  services/       photo + image + moderation + notification domain logic (no framework coupling)
+  workers/        Celery app + thumbnail task + notification-delivery task
+  alembic/        migrations (0001 initial, 0002 moderation, 0003 notifications)
   cache.py        Redis cache-aside helper (degrades gracefully)
   storage.py      local blob storage (shared volume)
-observability/    prometheus.yml + Grafana provisioning + RED dashboard JSON
-openapi/          committed OpenAPI 3.1 spec (stable + v1.0.0 + v1.1.0-rc1)
+deploy/traefik/   canary reverse-proxy config (static + weighted dynamic)
+observability/    prometheus.yml + Grafana provisioning + RED / Canary dashboard JSON
+openapi/          committed OpenAPI 3.1 spec (stable + v1.0.0 + v1.1.0)
 postman/          smoke collection, spec-generated collection, environment, fixtures
 loadtest/         k6 script + thresholds (== SLO), run.sh, committed results/
 integration_tests/  pytest-docker suite — real Postgres + Redis
-docs/             feature design, perf_slo.md, openapi diff, adr/
+sdk/              generated typed Python client (openapi-python-client)
+docs/             feature design, perf_slo.md, openapi diff, canary report, adr/
 tests/            pytest suite (unit + integration), 100% covered
 scripts/          smoke.sh (e2e), export_openapi.py (spec + drift check)
 ```
