@@ -91,7 +91,7 @@ jobs:
           {
             echo "## Schemathesis contract test"
             echo ""
-            echo "Target: \`http://localhost:8000/openapi.json\` (OpenAPI 3.1, 13 operations)"
+            echo "Target: \`http://localhost:8000/openapi.json\` (OpenAPI 3.1, 16 operations)"
             echo ""
             echo '```'
             sed -n '/=== SUMMARY ===/,$p' schemathesis-output.txt || tail -40 schemathesis-output.txt

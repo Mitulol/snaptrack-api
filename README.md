@@ -141,9 +141,10 @@ the JSON imports into any Grafana without editing.
   rationale for the two disabled checks are in `schemathesis.toml`.
 - **Postman/Newman** (`.github/workflows/postman-smoke.yml`) runs a curated
   smoke suite (`postman/smoke.postman_collection.json`: auth flow, photo CRUD
-  happy path, and 4xx cases — 28 assertions) against the freshly-built stack on
-  every push to `main`. `postman/snaptrack.postman_collection.json` is the full
-  collection generated from the spec.
+  happy path, moderation flow, and 4xx cases — 35 assertions across 24 requests)
+  against the freshly-built stack on every push to `main`.
+  `postman/snaptrack.postman_collection.json` is the full collection generated
+  from the spec.
 
 ## Moderation feature (Phase 3, `v1.1.0`)
 
@@ -255,7 +256,7 @@ Measured on this machine (Windows + WSL2, Docker Desktop, 12 vCPU / 15 GB).
 | Tests                                     | 112 unit/integration (`pytest`) + 8 pytest-docker (real PG/Redis) |
 | Line + branch coverage                    | **100.0%** (`coverage`, branch on; CI gate 90%)    |
 | Lint                                      | flake8 clean (`app` + `tests` + `scripts` + `integration_tests`) |
-| Contract test                             | Schemathesis: **0 failures** across 16 operations, ~1050 generated cases (CI) |
+| Contract test                             | Schemathesis: **0 failures**, all **16 operations** fuzzed on every PR + nightly (~1,000–1,250 generated cases/run — Hypothesis-driven, varies) |
 | Smoke suite                               | Newman: **35/35 assertions**, 24 requests          |
 | CI                                        | 6 workflows green — lint-test, contract-test, postman-smoke, integration-test, loadtest, sdk-gen |
 | **Load test @ reference load** (50 VUs, ~135 req/s) | **p95 269 ms**, error rate **0.00 %**, checks 100 % — [report](loadtest/results/summary.html) |
