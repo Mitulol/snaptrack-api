@@ -1,0 +1,78 @@
+name: sdk-gen
+
+on:
+  release:
+    types: [published]
+  pull_request:
+    paths:
+      - "openapi/**"
+      - "sdk/**"
+      - ".github/workflows/sdk-gen.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write        # upload release assets
+
+concurrency:
+  group: sdk-gen-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-sdk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install "openapi-python-client==0.29.1" ruff build
+
+      - name: Generate the client from the committed spec
+        run: |
+          openapi-python-client generate \
+            --path openapi/openapi.json --meta setup \
+            --output-path sdk-build --overwrite
+          ruff format sdk-build >/dev/null
+          ruff check --fix sdk-build >/dev/null || true
+
+      - name: Build + import-check
+        run: |
+          cd sdk-build
+          python -m build
+          pip install dist/*.whl
+          python -c "import snap_track_api_client; print('import OK:', snap_track_api_client.__file__)"
+          ls -l dist/
+
+      - name: Committed sdk/ is in sync with the spec
+        if: github.event_name == 'pull_request'
+        run: |
+          a=$(cd sdk/snaptrack-api-client && find . -type f -name '*.py' | sort)
+          b=$(cd sdk-build && find . -type f -name '*.py' | sort)
+          if ! diff <(echo "$a") <(echo "$b") >/tmp/sdkdiff; then
+            echo "::error::sdk/snaptrack-api-client is stale — regenerate it (see sdk/README.md)"
+            cat /tmp/sdkdiff
+            exit 1
+          fi
+          echo "SDK file set matches the spec ($(echo "$b" | wc -l) modules)."
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Python SDK"
+            echo ""
+            echo "Generated from \`openapi/openapi.json\` with openapi-python-client 0.29.1."
+            [ -d sdk-build/dist ] && ls sdk-build/dist | sed 's/^/- /'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: snaptrack-python-sdk
+          path: sdk-build/dist/*
+
+      - name: Attach to the GitHub Release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ github.event.release.tag_name }}" sdk-build/dist/* --clobber

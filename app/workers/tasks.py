@@ -15,7 +15,9 @@ from app import cache
 from app.config import settings
 from app.database import SessionLocal
 from app.models import Photo, Thumbnail, ThumbnailStatus
+from app.services import notification_service
 from app.services.images import InvalidImageError, make_thumbnail
+from app.services.mailer import NotificationDeliveryError
 from app.storage import thumbnail_path
 from app.workers.celery_app import celery_app
 
@@ -75,3 +77,38 @@ def generate_thumbnail(self, photo_id: int) -> dict:
 
 def _invalidate(photo_id: int) -> None:
     cache.cache_delete(cache.photo_cache_key(photo_id))
+
+
+@celery_app.task(
+    bind=True,
+    name="notifications.deliver",
+    max_retries=settings.notification_task_max_retries,
+    default_retry_delay=10,
+)
+def deliver_notification(self, notification_id: int) -> dict:
+    """Deliver one outbox row (see ``app.services.notification_service``).
+
+    Enqueued by ``moderation_service.decide`` after the decision commits.
+    """
+    db = SessionLocal()
+    try:
+        try:
+            row = notification_service.deliver(db, notification_id)
+        except notification_service.NotificationMissing:
+            logger.warning("deliver_notification: row %s vanished", notification_id)
+            return {"notification_id": notification_id, "status": "missing"}
+        except NotificationDeliveryError as exc:
+            if self.request.retries >= self.max_retries:
+                logger.error(
+                    "deliver_notification: giving up on %s after %s tries: %s",
+                    notification_id, self.request.retries, exc,
+                )
+                return {"notification_id": notification_id, "status": "failed", "error": str(exc)}
+            raise self.retry(exc=exc)
+        return {
+            "notification_id": notification_id,
+            "status": row.status.value,
+            "attempts": row.attempts,
+        }
+    finally:
+        db.close()

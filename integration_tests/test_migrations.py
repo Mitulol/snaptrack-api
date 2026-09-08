@@ -18,7 +18,9 @@ def test_downgrade_to_base_then_upgrade_head(integration_stack):
 
     command.upgrade(_CFG, "head")
     tables = set(inspect(engine).get_table_names())
-    assert {"users", "photos", "thumbnails", "flags", "moderation_actions"} <= tables
+    assert {
+        "users", "photos", "thumbnails", "flags", "moderation_actions", "notifications"
+    } <= tables
 
 
 def test_head_matches_orm_metadata(integration_stack):

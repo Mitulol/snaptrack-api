@@ -9,7 +9,11 @@ dist/
 # Virtualenv
 .venv/
 .venv-contract/
+.venv-sdk/
 venv/
+
+# SDK generation scratch dir (CI regenerates into sdk-build/)
+sdk-build/
 
 # Test / coverage artifacts
 .pytest_cache/

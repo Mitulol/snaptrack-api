@@ -22,7 +22,7 @@ from app.models import (
     Photo,
     User,
 )
-from app.services import photo_service
+from app.services import notification_service, photo_service
 from app.storage import delete_photo_files
 
 
@@ -95,17 +95,26 @@ def decide(
 
     if decision_enum is ModerationDecision.DISMISS:
         _resolve(flag, FlagResolution.DISMISSED, moderator)
+        notes = _queue_notifications(db, [flag], "dismiss", note)
         db.commit()
         db.refresh(flag)
+        _dispatch(notes)
         return flag
 
     # ACTION: close every pending flag on the photo, then delete the photo.
     now = datetime.now(timezone.utc)
-    for sibling in db.scalars(
-        select(Flag).where(Flag.photo_id == flag.photo_id, Flag.status == FlagStatus.PENDING)
-    ):
+    siblings = list(
+        db.scalars(
+            select(Flag).where(
+                Flag.photo_id == flag.photo_id, Flag.status == FlagStatus.PENDING
+            )
+        )
+    )
+    for sibling in siblings:
         _resolve(sibling, FlagResolution.ACTIONED, moderator, now=now)
     db.flush()
+
+    notes = _queue_notifications(db, siblings, "action", note)
 
     # A pending flag implies its photo still exists (FK), so this is never None.
     photo_id = flag.photo_id
@@ -116,7 +125,41 @@ def decide(
 
     db.commit()
     db.refresh(action)
+    _dispatch(notes)
     return action
+
+
+def _queue_notifications(
+    db: Session, flags: list[Flag], decision: str, moderator_note: str | None
+) -> list[int]:
+    """Create outbox rows for each affected reporter; return their ids.
+
+    Runs inside the decision transaction — the rows commit atomically with the
+    resolution, and the ids are handed to Celery only after that commit.
+    """
+    reporter_ids = {f.reporter_id for f in flags}
+    emails = dict(
+        db.execute(select(User.id, User.email).where(User.id.in_(reporter_ids))).all()
+    )
+    recipients = [
+        (emails[f.reporter_id], f.photo_id, f.id)
+        for f in flags
+        if f.reporter_id in emails
+    ]
+    rows = notification_service.queue_moderation_notifications(
+        db, recipients=recipients, decision=decision, moderator_note=moderator_note
+    )
+    db.flush()
+    return [row.id for row in rows]
+
+
+def _dispatch(notification_ids: list[int]) -> None:
+    # Local import: keeps the Celery stack out of the import path for callers
+    # that only need the pure service layer (the Phase 3 TDD tests).
+    from app.workers.tasks import deliver_notification
+
+    for nid in notification_ids:
+        deliver_notification.delay(nid)
 
 
 def _resolve(

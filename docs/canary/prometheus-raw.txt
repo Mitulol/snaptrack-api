@@ -1,0 +1,34 @@
+Raw Prometheus queries backing docs/canary-report.md
+(canary stack, v1.1.0 candidate, 2026-09-07; k6 = 50 VUs / 120s hold through Traefik)
+
+$ query: sum by (service) (traefik_service_requests_total{service=~"snaptrack-(stable|next)@file"})
+  snaptrack-stable@file   31982
+  snaptrack-next@file      3553
+
+$ query: sum by (service,code) (traefik_service_requests_total{...})
+  stable 200: 27097    stable 201: 4884    stable 404: 1
+  next   200:  3019    next   201:  534
+
+$ query: 100 * sum(next) / sum(stable+next)
+  9.9986        (weight configured: 10)
+
+$ query: sum by (service)(rate(...requests_total{code=~"5.."}[20m]))
+  (empty)       -- zero 5xx on both backends
+
+$ histogram_quantile over rate(traefik_service_request_duration_seconds_bucket[20m])
+  quantile   stable     next
+  p50        0.0512 s   0.0502 s
+  p95        0.0972 s   0.0955 s
+  p99        0.2201 s   0.0995 s   (next tail under-sampled: 3.5k vs 32k requests)
+
+$ mean = increase(..._sum[20m]) / increase(..._count[20m])
+  stable 0.0369 s     next 0.0216 s
+
+$ bucket CDF (fraction of requests <= le), 20m
+  le=0.1 :  stable 0.9772   next 0.9952
+  le=0.3 :  stable 0.9985   next 0.9983
+  le=1.2 :  stable 1.0000   next 1.0000
+
+NOTE: Traefik v3 default duration buckets are 0.1 / 0.3 / 1.2 / 5.0 s, so the
+quantiles above are bucket-interpolated. k6's client-side p95 (81.6 ms, exact)
+is in docs/canary/k6-through-traefik.json.

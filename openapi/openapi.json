@@ -786,7 +786,7 @@
     "description": "SnapTrack lets a user upload photos, tracks per-photo metadata, and derives thumbnails on a background worker. Reads of hot photo metadata are served from a Redis cache-aside layer.",
     "summary": "Photo tracking with async thumbnail processing and moderation workflows.",
     "title": "SnapTrack API",
-    "version": "1.1.0-rc1"
+    "version": "1.1.0"
   },
   "openapi": "3.1.0",
   "paths": {

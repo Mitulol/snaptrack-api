@@ -66,5 +66,4 @@ deletes the photo, and `photo_service.delete_photo` already invalidates
 
 Additive only — new paths, new schemas, one new `reason`/`decision` enum, no
 changes to existing operations. `oasdiff` reports **no breaking changes**
-(`docs/openapi-diff-v1.1.0-rc1.md`), so `v1.0.0 → v1.1.0-rc1` is the correct
-semver bump.
+(`docs/openapi-diff-v1.1.0.md`), so `v1.0.0 → v1.1.0` is the correct semver bump.

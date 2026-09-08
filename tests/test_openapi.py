@@ -24,7 +24,7 @@ def test_committed_spec_matches_code():
 def test_spec_is_openapi_31():
     spec = app.openapi()
     assert spec["openapi"].startswith("3.1")
-    assert spec["info"]["version"] == "1.1.0-rc1"
+    assert spec["info"]["version"] == "1.1.0"
 
 
 def test_protected_photo_routes_document_401_and_404():
@@ -43,7 +43,7 @@ def test_error_responses_use_the_shared_model():
 
 
 def test_committed_versioned_spec_files_exist():
-    for version in ("1.0.0", "1.1.0-rc1"):
+    for version in ("1.0.0", "1.1.0"):
         p = ROOT / "openapi" / f"openapi-v{version}.json"
         assert p.exists(), p
         assert json.loads(p.read_text())["info"]["version"] == version

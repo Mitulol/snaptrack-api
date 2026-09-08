@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     environment: str = "development"
+    # Which build is answering. The canary stack (docker-compose profile
+    # "canary") runs a second API as "next"; Traefik splits traffic 90/10.
+    release_channel: str = "stable"
 
     # --- Storage -----------------------------------------------------------
     database_url: str = "postgresql+psycopg2://snaptrack:snaptrack@localhost:5432/snaptrack"
@@ -42,6 +45,14 @@ class Settings(BaseSettings):
     photo_cache_ttl_seconds: int = 300
     thumbnail_max_edge: int = 256
     thumbnail_task_max_retries: int = 3
+
+    # --- Notifications -------------------------------------------------------
+    # No real SMTP in a laptop-only stack. "console" logs the message; "file"
+    # drops an RFC-822 .eml into ``notification_mail_dir``.
+    notification_backend: str = "console"  # console | file
+    notification_mail_dir: str = "./_mail"
+    notification_from_addr: str = "moderation@snaptrack.local"
+    notification_task_max_retries: int = 3
 
     @property
     def is_testing(self) -> bool:

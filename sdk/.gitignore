@@ -1,0 +1,4 @@
+# build artifacts — the SDK is rebuilt from openapi/openapi.json by sdk-gen.yml
+**/dist/
+**/build/
+**/*.egg-info/

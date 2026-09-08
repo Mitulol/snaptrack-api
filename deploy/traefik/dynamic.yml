@@ -1,0 +1,41 @@
+# Traefik v3 dynamic configuration — the canary split.
+#
+# `snaptrack` (weighted) sends 90% of requests to the stable build and 10% to
+# the canary. Change the weights and save; Traefik reloads live (watch: true).
+# Promotion = set stable weight 0 / next weight 100, or cut over the compose
+# `api` image and drop this file.
+
+http:
+  routers:
+    snaptrack:
+      rule: "PathPrefix(`/`)"
+      entryPoints:
+        - web
+      service: snaptrack
+
+  services:
+    snaptrack:
+      weighted:
+        services:
+          - name: snaptrack-stable
+            weight: 90
+          - name: snaptrack-next
+            weight: 10
+
+    snaptrack-stable:
+      loadBalancer:
+        servers:
+          - url: "http://api:8000"
+        healthCheck:
+          path: /healthz
+          interval: "10s"
+          timeout: "3s"
+
+    snaptrack-next:
+      loadBalancer:
+        servers:
+          - url: "http://api-next:8000"
+        healthCheck:
+          path: /healthz
+          interval: "10s"
+          timeout: "3s"

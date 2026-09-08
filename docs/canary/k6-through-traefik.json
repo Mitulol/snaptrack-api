@@ -1,0 +1,562 @@
+{
+  "options": {
+    "summaryTrendStats": [
+      "avg",
+      "min",
+      "med",
+      "max",
+      "p(90)",
+      "p(95)"
+    ],
+    "summaryTimeUnit": "",
+    "noColor": false
+  },
+  "state": {
+    "isStdOutTTY": false,
+    "isStdErrTTY": false,
+    "testRunDurationMs": 171162.405346
+  },
+  "metrics": {
+    "iterations": {
+      "type": "counter",
+      "contains": "default",
+      "values": {
+        "count": 35371,
+        "rate": 206.65168807658733
+      }
+    },
+    "snaptrack_photo_upload_ms": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 51.068482,
+        "max": 286.747039,
+        "p(90)": 93.9838283,
+        "p(95)": 108.69296619999999,
+        "avg": 57.837127196140756,
+        "min": 13.214211
+      },
+      "thresholds": {
+        "p(95)<600": {
+          "ok": true
+        }
+      }
+    },
+    "vus_max": {
+      "type": "gauge",
+      "contains": "default",
+      "values": {
+        "max": 50,
+        "value": 50,
+        "min": 50
+      }
+    },
+    "http_req_tls_handshaking": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(90)": 0,
+        "p(95)": 0,
+        "avg": 0,
+        "min": 0,
+        "med": 0,
+        "max": 0
+      }
+    },
+    "http_req_duration": {
+      "values": {
+        "p(90)": 66.126382,
+        "p(95)": 81.5947785,
+        "avg": 36.725771351751185,
+        "min": 3.70497,
+        "med": 30.721461,
+        "max": 403.602448
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "data_received": {
+      "contains": "data",
+      "values": {
+        "count": 70062408,
+        "rate": 409332.9248228944
+      },
+      "type": "counter"
+    },
+    "snaptrack_photo_read_ms": {
+      "values": {
+        "avg": 25.514946624441635,
+        "min": 3.70497,
+        "med": 20.746923,
+        "max": 257.532377,
+        "p(90)": 46.8806352,
+        "p(95)": 56.76251349999997
+      },
+      "thresholds": {
+        "p(95)<250": {
+          "ok": true
+        }
+      },
+      "type": "trend",
+      "contains": "time"
+    },
+    "http_req_blocked": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0.015422046744244957,
+        "min": 0.002019,
+        "med": 0.010504,
+        "max": 26.424204,
+        "p(90)": 0.014981,
+        "p(95)": 0.0175055
+      }
+    },
+    "vus": {
+      "contains": "default",
+      "values": {
+        "value": 2,
+        "min": 0,
+        "max": 50
+      },
+      "type": "gauge"
+    },
+    "data_sent": {
+      "type": "counter",
+      "contains": "data",
+      "values": {
+        "count": 11997870,
+        "rate": 70096.4091720179
+      }
+    },
+    "http_req_duration{expected_response:true}": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "min": 3.70497,
+        "med": 30.721461,
+        "max": 403.602448,
+        "p(90)": 66.126382,
+        "p(95)": 81.5947785,
+        "avg": 36.725771351751185
+      },
+      "thresholds": {
+        "p(95)<400": {
+          "ok": true
+        }
+      }
+    },
+    "http_req_failed": {
+      "thresholds": {
+        "rate<0.001": {
+          "ok": true
+        }
+      },
+      "type": "rate",
+      "contains": "default",
+      "values": {
+        "rate": 0,
+        "passes": 0,
+        "fails": 35491
+      }
+    },
+    "checks": {
+      "contains": "default",
+      "values": {
+        "rate": 1,
+        "passes": 35371,
+        "fails": 0
+      },
+      "thresholds": {
+        "rate>0.99": {
+          "ok": true
+        }
+      },
+      "type": "rate"
+    },
+    "snaptrack_photo_list_ms": {
+      "thresholds": {
+        "p(95)<300": {
+          "ok": true
+        }
+      },
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "med": 31.4167125,
+        "max": 278.998738,
+        "p(90)": 59.457061200000005,
+        "p(95)": 70.59018679999994,
+        "avg": 36.16172806893431,
+        "min": 5.991907
+      }
+    },
+    "http_reqs": {
+      "contains": "default",
+      "values": {
+        "count": 35491,
+        "rate": 207.35277661152247
+      },
+      "type": "counter"
+    },
+    "http_req_waiting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 81.245947,
+        "avg": 36.41410795035365,
+        "min": 3.616638,
+        "med": 30.368802,
+        "max": 403.481632,
+        "p(90)": 65.77787
+      }
+    },
+    "http_req_receiving": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "p(95)": 0.7492095,
+        "avg": 0.25529709630610636,
+        "min": 0.015296,
+        "med": 0.15354,
+        "max": 30.766083,
+        "p(90)": 0.523592
+      }
+    },
+    "iteration_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 187.30846204121934,
+        "min": 6.708982,
+        "med": 187.526641,
+        "max": 513.296542,
+        "p(90)": 307.222125,
+        "p(95)": 325.00142
+      }
+    },
+    "http_req_connecting": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 0.0021299516497140115,
+        "min": 0,
+        "med": 0,
+        "max": 26.025101,
+        "p(90)": 0,
+        "p(95)": 0
+      }
+    },
+    "group_duration": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "avg": 36.43703640731131,
+        "min": 3.813165,
+        "med": 31.001064,
+        "max": 359.560965,
+        "p(90)": 66.098978,
+        "p(95)": 80.9602595
+      }
+    },
+    "http_req_sending": {
+      "type": "trend",
+      "contains": "time",
+      "values": {
+        "max": 10.112713,
+        "p(90)": 0.118309,
+        "p(95)": 0.1385455,
+        "avg": 0.056366305091431555,
+        "min": 0.006126,
+        "med": 0.035451
+      }
+    }
+  },
+  "setup_data": {
+    "users": [
+      {
+        "email": "k6-1788825332217-0@example.com",
+        "photoId": 1,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzg4ODI1MzMyLCJleHAiOjE3ODg4MjcxMzJ9.7SXd5VRNSh4Xpa2r8yTjZ6_JV5ASfiaorF_-JZld3dw"
+      },
+      {
+        "email": "k6-1788825333045-1@example.com",
+        "photoId": 2,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzg4ODI1MzMzLCJleHAiOjE3ODg4MjcxMzN9.JMB6PeeNd91KQZIdCYt1g7VEGMJHjLWknz0auabNHLA"
+      },
+      {
+        "email": "k6-1788825333712-2@example.com",
+        "photoId": 3,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzg4ODI1MzM0LCJleHAiOjE3ODg4MjcxMzR9.qX7zqm9VZS0NyIoYGk57_dDOU7DPqslW95_ywJd1bVc"
+      },
+      {
+        "photoId": 4,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiaWF0IjoxNzg4ODI1MzM1LCJleHAiOjE3ODg4MjcxMzV9.3J_VZKe4a-vOMPjGWFRr0aBmUa_3Nc3PhMhXAzrixw4",
+        "email": "k6-1788825334432-3@example.com"
+      },
+      {
+        "email": "k6-1788825335083-4@example.com",
+        "photoId": 5,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1IiwiaWF0IjoxNzg4ODI1MzM1LCJleHAiOjE3ODg4MjcxMzV9.e5wfJK3zUr9cNSf1wdqZVDVZYgnW0o6rt3wVW0Q93bQ"
+      },
+      {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2IiwiaWF0IjoxNzg4ODI1MzM2LCJleHAiOjE3ODg4MjcxMzZ9.2HlzcFM0YMAu9GuCPGXe7SyFDHld6okW7L34P8HX8Do",
+        "email": "k6-1788825335742-5@example.com",
+        "photoId": 6
+      },
+      {
+        "email": "k6-1788825336555-6@example.com",
+        "photoId": 7,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3IiwiaWF0IjoxNzg4ODI1MzM3LCJleHAiOjE3ODg4MjcxMzd9.ZahwqdZYosyXB8ezP5fRFSvXFFdpnO3sfxTyLr4Joxs"
+      },
+      {
+        "email": "k6-1788825337176-7@example.com",
+        "photoId": 8,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4IiwiaWF0IjoxNzg4ODI1MzM3LCJleHAiOjE3ODg4MjcxMzd9.nmnxaXdQmBIcYS2zmStiVkqpRlVlHYqkPM3EvnCzZzI"
+      },
+      {
+        "email": "k6-1788825337850-8@example.com",
+        "photoId": 9,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5IiwiaWF0IjoxNzg4ODI1MzM4LCJleHAiOjE3ODg4MjcxMzh9.KFxyZhJkp0-hK3qSGRO5945ajg9Drdw0fTXoX8fw0J8"
+      },
+      {
+        "email": "k6-1788825338483-9@example.com",
+        "photoId": 10,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMCIsImlhdCI6MTc4ODgyNTMzOSwiZXhwIjoxNzg4ODI3MTM5fQ.MlWTbnC_EVHQsEmlJ8QqOgy_TcZwXUdV4kFjLOWCnQw"
+      },
+      {
+        "email": "k6-1788825339129-10@example.com",
+        "photoId": 11,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMSIsImlhdCI6MTc4ODgyNTMzOSwiZXhwIjoxNzg4ODI3MTM5fQ.U8_KPQzywW0v5ZscKXmo5EmlPhmScx8P1vPQ1MteY2M"
+      },
+      {
+        "email": "k6-1788825339772-11@example.com",
+        "photoId": 12,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMiIsImlhdCI6MTc4ODgyNTM0MCwiZXhwIjoxNzg4ODI3MTQwfQ.PItvxhhRYr4TwJvShDHp--kAOSO0P6vi84b61WNJPGI"
+      },
+      {
+        "email": "k6-1788825340386-12@example.com",
+        "photoId": 13,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMyIsImlhdCI6MTc4ODgyNTM0MSwiZXhwIjoxNzg4ODI3MTQxfQ.K0QPODd3_wF1I821dpqafPZ5A4vEqFpumqwSlgMBwTQ"
+      },
+      {
+        "email": "k6-1788825341027-13@example.com",
+        "photoId": 14,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNCIsImlhdCI6MTc4ODgyNTM0MSwiZXhwIjoxNzg4ODI3MTQxfQ.Up2VXap6kLx9PcA-675Yg9bEytEGZM70NkY-7pC5goA"
+      },
+      {
+        "email": "k6-1788825341661-14@example.com",
+        "photoId": 15,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNSIsImlhdCI6MTc4ODgyNTM0MiwiZXhwIjoxNzg4ODI3MTQyfQ.28f-gQ0OMCzvSBH87hW5__KT2gMxBz5txWjwKGKomcM"
+      },
+      {
+        "email": "k6-1788825342284-15@example.com",
+        "photoId": 16,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNiIsImlhdCI6MTc4ODgyNTM0MiwiZXhwIjoxNzg4ODI3MTQyfQ.Hie_3sT-ZeGDAB3v-j-AkxxXB5HgRlCYXMhWJ3hz8fI"
+      },
+      {
+        "photoId": 17,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxNyIsImlhdCI6MTc4ODgyNTM0MywiZXhwIjoxNzg4ODI3MTQzfQ.s6TeO5hPQuchyXA73ug7jfeeCkyXUMK2X_c36D3-Sk0",
+        "email": "k6-1788825342959-16@example.com"
+      },
+      {
+        "photoId": 18,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOCIsImlhdCI6MTc4ODgyNTM0NCwiZXhwIjoxNzg4ODI3MTQ0fQ.-x-b1URaquzjyh2ru2oNx0qazZGnbv-uvAPGVV07_co",
+        "email": "k6-1788825343585-17@example.com"
+      },
+      {
+        "email": "k6-1788825344224-18@example.com",
+        "photoId": 19,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxOSIsImlhdCI6MTc4ODgyNTM0NCwiZXhwIjoxNzg4ODI3MTQ0fQ.Vtocmw6IT5P3-waJE66F1r-J22nrwSVtaNY3xqp-UwE"
+      },
+      {
+        "email": "k6-1788825344839-19@example.com",
+        "photoId": 20,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMCIsImlhdCI6MTc4ODgyNTM0NSwiZXhwIjoxNzg4ODI3MTQ1fQ.9hYxcjEiMHL1MSFiymRj43Pm6__pnTYHpLfWN4pH2Hs"
+      },
+      {
+        "email": "k6-1788825345486-20@example.com",
+        "photoId": 21,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMSIsImlhdCI6MTc4ODgyNTM0NiwiZXhwIjoxNzg4ODI3MTQ2fQ.mEOeONU_KwfkwKGBXCY64K-Qb6C9Ybc_2xmqDOz1cYA"
+      },
+      {
+        "email": "k6-1788825346122-21@example.com",
+        "photoId": 22,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMiIsImlhdCI6MTc4ODgyNTM0NiwiZXhwIjoxNzg4ODI3MTQ2fQ.KEBf3IpL3cxfl-Dm0aYHUu2MGaqViNzeQs5gzcZdGt8"
+      },
+      {
+        "email": "k6-1788825346744-22@example.com",
+        "photoId": 23,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMyIsImlhdCI6MTc4ODgyNTM0NywiZXhwIjoxNzg4ODI3MTQ3fQ.QLwcAdzXszoGSfg84xTFqtNJAnES5zFYfEcoppDGx4U"
+      },
+      {
+        "email": "k6-1788825347369-23@example.com",
+        "photoId": 24,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNCIsImlhdCI6MTc4ODgyNTM0OCwiZXhwIjoxNzg4ODI3MTQ4fQ.gh8vde4_2Yti32Vt3MrVCKgzdjRc4dDE9Hly5vzUKI0"
+      },
+      {
+        "email": "k6-1788825348071-24@example.com",
+        "photoId": 25,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNSIsImlhdCI6MTc4ODgyNTM0OCwiZXhwIjoxNzg4ODI3MTQ4fQ.XCy_pwmKvK29p1gwkn85cedYRDH_uVfqUApfHlQsFzA"
+      },
+      {
+        "email": "k6-1788825348715-25@example.com",
+        "photoId": 26,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNiIsImlhdCI6MTc4ODgyNTM0OSwiZXhwIjoxNzg4ODI3MTQ5fQ.x0jwsAThWouAleHU9A5Ea8XBA_pKikBz_Kwu5R8pZww"
+      },
+      {
+        "email": "k6-1788825349343-26@example.com",
+        "photoId": 27,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNyIsImlhdCI6MTc4ODgyNTM0OSwiZXhwIjoxNzg4ODI3MTQ5fQ._WAZesw8Pc3Wbao23hfrFbcH6-W2Da8TL66pPXpcwP8"
+      },
+      {
+        "email": "k6-1788825349970-27@example.com",
+        "photoId": 28,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyOCIsImlhdCI6MTc4ODgyNTM1MCwiZXhwIjoxNzg4ODI3MTUwfQ.0EoM6O2Zk3soFARW3CrPXyxoktQ_iZGJbwU0TT0DbQQ"
+      },
+      {
+        "email": "k6-1788825350608-28@example.com",
+        "photoId": 29,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyOSIsImlhdCI6MTc4ODgyNTM1MSwiZXhwIjoxNzg4ODI3MTUxfQ.Vdeb4gH8o9VcPy22h8h2i9elrQ9pJHXb0otEzOblRFw"
+      },
+      {
+        "email": "k6-1788825351234-29@example.com",
+        "photoId": 30,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzMCIsImlhdCI6MTc4ODgyNTM1MSwiZXhwIjoxNzg4ODI3MTUxfQ._Xku_h9jo5ip--HsjUjBVmfW0fO9F8b5QtXFH1-nGmU"
+      },
+      {
+        "email": "k6-1788825351865-30@example.com",
+        "photoId": 31,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzMSIsImlhdCI6MTc4ODgyNTM1MiwiZXhwIjoxNzg4ODI3MTUyfQ.WiZec5VSQI4ASNu_snMIXp7GhuQeRBymGXhZokFIL70"
+      },
+      {
+        "photoId": 32,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzMiIsImlhdCI6MTc4ODgyNTM1MywiZXhwIjoxNzg4ODI3MTUzfQ.4K5yne_mBZ8sb-Vez3CvzkdOUOAivMMLcJWhAcwvZBg",
+        "email": "k6-1788825352519-31@example.com"
+      },
+      {
+        "email": "k6-1788825353187-32@example.com",
+        "photoId": 33,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzMyIsImlhdCI6MTc4ODgyNTM1MywiZXhwIjoxNzg4ODI3MTUzfQ.MD6TeKmZvMbbH3jnIl2HRHVz_dPH5eKarRGeh-ZAOLo"
+      },
+      {
+        "email": "k6-1788825353864-33@example.com",
+        "photoId": 34,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNCIsImlhdCI6MTc4ODgyNTM1NCwiZXhwIjoxNzg4ODI3MTU0fQ.eQfVPOQDv-qCDXVYsMMtZaRz_-8p3BrvgJsaZRRfnyo"
+      },
+      {
+        "photoId": 35,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNSIsImlhdCI6MTc4ODgyNTM1NSwiZXhwIjoxNzg4ODI3MTU1fQ.1rKRzHcRPB9mqWCCAolH8iJmm4puJpievSYIrZNk_Zw",
+        "email": "k6-1788825354510-34@example.com"
+      },
+      {
+        "email": "k6-1788825355127-35@example.com",
+        "photoId": 36,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNiIsImlhdCI6MTc4ODgyNTM1NSwiZXhwIjoxNzg4ODI3MTU1fQ.TjgdlWqrR3sbA5VJVIPN9XAIKYtYXpKdH3eeNQa6k1o"
+      },
+      {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzNyIsImlhdCI6MTc4ODgyNTM1NiwiZXhwIjoxNzg4ODI3MTU2fQ.A5CxdLDOi0u0rxYkVwgvOP3R4TwAs10SY-0fXTf9jxc",
+        "email": "k6-1788825355759-36@example.com",
+        "photoId": 37
+      },
+      {
+        "photoId": 38,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOCIsImlhdCI6MTc4ODgyNTM1NywiZXhwIjoxNzg4ODI3MTU3fQ.08DIWRW-qYEo1lx6q7uH5XGVCD8h9UF4FQD-LPDilig",
+        "email": "k6-1788825356417-37@example.com"
+      },
+      {
+        "email": "k6-1788825357040-38@example.com",
+        "photoId": 39,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzOSIsImlhdCI6MTc4ODgyNTM1NywiZXhwIjoxNzg4ODI3MTU3fQ.2QdJcHgufQFaJ47XosYT9jfOmq62CSqRxgHfdVEIuSE"
+      },
+      {
+        "email": "k6-1788825357663-39@example.com",
+        "photoId": 40,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MCIsImlhdCI6MTc4ODgyNTM1OCwiZXhwIjoxNzg4ODI3MTU4fQ.asPdxuQo6szNYLKNDA4u1it7ocLKhtg7GVNLjpVpyy8"
+      }
+    ]
+  },
+  "root_group": {
+    "groups": [
+      {
+        "name": "list photos",
+        "path": "::list photos",
+        "id": "880de8cd720c98d6819832a2f529b273",
+        "groups": [],
+        "checks": [
+            {
+              "fails": 0,
+              "name": "list 200",
+              "path": "::list photos::list 200",
+              "id": "ee80979dd47f0caf63f56ae0c46be9ad",
+              "passes": 8878
+            }
+          ]
+      },
+      {
+        "groups": [],
+        "checks": [
+            {
+              "path": "::patch caption::patch 200",
+              "id": "a3b9c40b1b1bafaaa627703822928388",
+              "passes": 4244,
+              "fails": 0,
+              "name": "patch 200"
+            }
+          ],
+        "name": "patch caption",
+        "path": "::patch caption",
+        "id": "467559a0287ea7599d3a853e6632e9ea"
+      },
+      {
+        "name": "upload photo",
+        "path": "::upload photo",
+        "id": "3369ce1395d7e3af908afc56c17415a9",
+        "groups": [],
+        "checks": [
+            {
+              "name": "upload 201",
+              "path": "::upload photo::upload 201",
+              "id": "9c064d2ee880c8c481e44f7f5d8f24f7",
+              "passes": 5338,
+              "fails": 0
+            }
+          ]
+      },
+      {
+        "id": "053a0a6ff1bf6bad80f16daaecc6e811",
+        "groups": [],
+        "checks": [
+            {
+              "passes": 14107,
+              "fails": 0,
+              "name": "read 200",
+              "path": "::read photo (cache-aside)::read 200",
+              "id": "9b6550846fd9e80a9a08e7ca793f97ee"
+            }
+          ],
+        "name": "read photo (cache-aside)",
+        "path": "::read photo (cache-aside)"
+      },
+      {
+        "name": "thumbnail status",
+        "path": "::thumbnail status",
+        "id": "5ffea048e6bed8b1c04e925a8377e5e1",
+        "groups": [],
+        "checks": [
+            {
+              "path": "::thumbnail status::thumb 200",
+              "id": "e173c19faf142ad71f00cd6b85c3cd60",
+              "passes": 2804,
+              "fails": 0,
+              "name": "thumb 200"
+            }
+          ]
+      }
+    ],
+    "checks": [],
+    "name": "",
+    "path": "",
+    "id": "d41d8cd98f00b204e9800998ecf8427e"
+  }
+}
